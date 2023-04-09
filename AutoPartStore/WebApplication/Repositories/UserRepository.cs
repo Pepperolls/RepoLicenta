@@ -32,6 +32,11 @@ namespace WebApplication.Repositories
             return _dbContext.Users.Find(userId);
         }
 
+        public UserModel GetUserByUsername(string username)
+        {
+            return _dbContext.Users.FirstOrDefault(u => u.Username == username);
+        }
+
         public IEnumerable<UserModel> GetAllUsers()
         {
             return _dbContext.Users;
