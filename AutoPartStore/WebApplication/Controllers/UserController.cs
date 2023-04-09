@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WebApplication.Models;
 using WebApplication.Repositories;
 
@@ -36,20 +33,25 @@ namespace WebApplication.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateUser(string email, string password, string firstName, string lastName, int personalIdNo)
+        public IActionResult CreateUser(string username, string password, string email, string firstName, string lastName)
         {
-            var userModel = new UserModel(email, password, firstName, lastName, personalIdNo)
+            if(_userRepository.GetUserByUsername(username) != null) 
             {
-                Email = email,
+                return BadRequest();
+            }
+
+            var userModel = new UserModel
+            {
+                Username = username,
                 Password = password,
+                Email = email,
                 FirstName = firstName,
                 LastName = lastName,
-                PersonalIdNo = personalIdNo
             };
 
             _userRepository.CreateUser(userModel);
 
-            return CreatedAtAction(nameof(CreateUser), new { id = userModel.UserModelId }, userModel);
+            return CreatedAtAction(nameof(CreateUser), new { id = userModel.UserId }, userModel);
         }
 
         [HttpDelete("{id}")]

@@ -7,24 +7,27 @@ namespace WebApplication.Models
 {
     public class UserModel
     {
-        public int UserModelId { get; set; }
-        public string Email { get; set; }
+        public Guid UserId { get; set; }
+        public string Username { get; set; }
         public string Password { get; set; }
+        public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int PersonalIdNo { get; set; }
+        public bool IsAdmin { get; set; }
 
         public UserModel()
         {
-
+            UserId = Guid.NewGuid();
         }
-        public UserModel(string email, string password, string firstName, string lastName, int personalIdNo)
+        public UserModel(string username, string password, string email, string firstName, string lastName)
         {
-            this.Email = email;
-            this.Password = password;
-            this.FirstName = firstName;
-            this.LastName = lastName;
-            this.PersonalIdNo = personalIdNo;
+            UserId = Guid.NewGuid();
+            Username = username;
+            Password = password;
+            Email = email;
+            FirstName = firstName;
+            LastName = lastName;
+            IsAdmin = false;
         }
     }
 }

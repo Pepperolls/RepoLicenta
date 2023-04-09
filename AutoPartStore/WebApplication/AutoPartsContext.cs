@@ -21,12 +21,13 @@ namespace WebApplication
                 .HasForeignKey(k => k.CarModelId)
                 .OnDelete(DeleteBehavior.Cascade);*/
 
-            modelBuilder.Entity<UserModel>().HasKey(p => p.UserModelId);
+            modelBuilder.Entity<UserModel>().HasKey(p => p.UserId);
+            modelBuilder.Entity<UserModel>().Property(p => p.Username).IsRequired().HasMaxLength(20);
             modelBuilder.Entity<UserModel>().Property(p => p.Email).IsRequired();
-            modelBuilder.Entity<UserModel>().Property(p => p.Password).IsRequired().HasMaxLength(20);
-            modelBuilder.Entity<UserModel>().Property(p => p.FirstName).IsRequired();
-            modelBuilder.Entity<UserModel>().Property(p => p.LastName).IsRequired();
-            modelBuilder.Entity<UserModel>().Property(p => p.PersonalIdNo).IsRequired();
+            modelBuilder.Entity<UserModel>().Property(p => p.Password).IsRequired();
+            modelBuilder.Entity<UserModel>().Property(p => p.FirstName).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<UserModel>().Property(p => p.LastName).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<UserModel>().Property(p => p.IsAdmin).IsRequired();
 
             modelBuilder.Entity<CarModel>().Property(p => p.Make).IsRequired().HasMaxLength(20);
             modelBuilder.Entity<CarModel>().Property(p => p.Model).IsRequired().HasMaxLength(20);
@@ -35,7 +36,7 @@ namespace WebApplication
             modelBuilder.Entity<CarModel>().Property(p => p.FuelType).IsRequired();
 
             modelBuilder.Entity<PartModel>().Property(p => p.Name).IsRequired().HasMaxLength(20);
-            modelBuilder.Entity<PartModel>().Property(p => p.Price).IsRequired();
+            modelBuilder.Entity<PartModel>().Property(p => p.Price).IsRequired().HasColumnType("decimal(18,2)");
             modelBuilder.Entity<PartModel>().Property(p => p.Category).IsRequired().HasMaxLength(20);
         }
 
