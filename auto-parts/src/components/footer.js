@@ -72,7 +72,7 @@ const Payment = styled.img`
 
 const Footer = () => {
   return (
-    <Container>
+    <Container position="fixed">
       <Left>
         <Name>CarLounge</Name>
         <Desc>

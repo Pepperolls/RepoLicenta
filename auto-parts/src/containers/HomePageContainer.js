@@ -4,7 +4,7 @@ const HomePageContainer = () => {
   return (
     <div>
       <img src="/images/HomeCar.png" alt="Home page car"></img>
-      <Footer></Footer>
+      {/* <Footer></Footer> */}
     </div>
   );
 };

@@ -15,7 +15,7 @@ const CustomAppBar = () => {
     color: red[50],
   };
   return (
-    <Box sx={{ flexGrow: 1 }} mb={8}>
+    <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
