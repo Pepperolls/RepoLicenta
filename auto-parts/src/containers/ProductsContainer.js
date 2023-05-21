@@ -25,7 +25,7 @@ const ProductsContainer = props => {
           <Grid item xs={false} sm={2} />
         </Grid>
       </Box>
-      <Footer />
+      {/* <Footer /> */}
     </Grid>
   );
 };

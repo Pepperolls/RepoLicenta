@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,32 +16,55 @@ namespace WebApplication.Repositories
             _dbContext = dbContext;
         }
 
-        public void CreateUser(UserModel user)
+        public async Task CreateUser(UserModel user)
         {
             _dbContext.Users.Add(user);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
 
-        public void DeleteUser(int userId)
+        public async Task<IEnumerable<UserModel>> GetAllUsers()
         {
-            _dbContext.Users.Remove(GetUser(userId));
-            _dbContext.SaveChanges();
+            return await _dbContext.Users.ToListAsync();
         }
 
-        public UserModel GetUser(int userId)
+        public async Task DeleteUserByGuid(Guid userGuid)
         {
-            return _dbContext.Users.Find(userId);
+            var user = await GetUserByGuid(userGuid);
+            if (user != null)
+            {
+                _dbContext.Users.Remove(user);
+                await _dbContext.SaveChangesAsync();
+            }
         }
 
-        public UserModel GetUserByUsername(string username)
+        public async Task<UserModel> GetUserByGuid(Guid userGuid)
         {
-            return _dbContext.Users.FirstOrDefault(u => u.Username == username);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserId == userGuid);
+            return await Task.FromResult(user);
         }
 
-        public IEnumerable<UserModel> GetAllUsers()
+        public async Task<UserModel> GetUserByUsernameAndPassword(string username, string password)
         {
-            return _dbContext.Users;
+            var user = _dbContext.Users.FirstOrDefault(u => u.Username == username && u.Password == password);
+            return await Task.FromResult(user);
         }
 
+        public async Task<UserModel> GetUserByEmailAndPassword(string email, string password)
+        {
+            var user = _dbContext.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
+            return await Task.FromResult(user);
+        }
+
+        public async Task<UserModel> GetUserByUsername(string username)
+        {
+            var user = _dbContext.Users.FirstOrDefault(u => u.Username == username);
+            return await Task.FromResult(user);
+        }
+
+        public async Task<UserModel> GetUserByEmail(string email)
+        {
+            var user = _dbContext.Users.FirstOrDefault(u => u.Email == email);
+            return await Task.FromResult(user);
+        }
     }
 }
