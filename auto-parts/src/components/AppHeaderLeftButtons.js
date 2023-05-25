@@ -5,9 +5,9 @@ import ListItemText from '@mui/material/ListItemText';
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { red } from '@mui/material/colors';
-import history from '../history/history';
 import { Button } from '@material-ui/core';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const HeaderList = styled.ul`
   display: inline;
@@ -30,31 +30,28 @@ const buttonStyle = {
 };
 
 const AppHeaderLeftButtons = () => {
+  const navigate = useNavigate();
+
   return (
     <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'primary' }}>
-      <nav>
-        <HeaderList>
-          <HeaderListItem>
-            <Button onClick={() => history.push('/')} style={buttonStyle}>
-              <ListItemIcon sx={listItemIconStyle}>
-                <HomeOutlinedIcon style={iconStyle} />
-              </ListItemIcon>
-              <ListItemText primary="Home" />
-            </Button>
-          </HeaderListItem>
-          <HeaderListItem>
-            <Button
-              onClick={() => history.push('/Products')}
-              style={buttonStyle}
-            >
-              <ListItemIcon style={listItemIconStyle}>
-                <LocalMallOutlinedIcon style={iconStyle} />
-              </ListItemIcon>
-              <ListItemText primary="Products" />
-            </Button>
-          </HeaderListItem>
-        </HeaderList>
-      </nav>
+      <HeaderList>
+        <HeaderListItem>
+          <Button onClick={() => navigate('/')} style={buttonStyle}>
+            <ListItemIcon sx={listItemIconStyle}>
+              <HomeOutlinedIcon style={iconStyle} />
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+          </Button>
+        </HeaderListItem>
+        <HeaderListItem>
+          <Button onClick={() => navigate('/Products')} style={buttonStyle}>
+            <ListItemIcon style={listItemIconStyle}>
+              <LocalMallOutlinedIcon style={iconStyle} />
+            </ListItemIcon>
+            <ListItemText primary="Products" />
+          </Button>
+        </HeaderListItem>
+      </HeaderList>
     </Box>
   );
 };

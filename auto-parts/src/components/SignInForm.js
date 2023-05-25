@@ -1,4 +1,3 @@
-import history from '../history/history';
 import axios from 'axios';
 import {
   Grid,
@@ -13,6 +12,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 toast.configure();
 
@@ -48,6 +48,8 @@ const schema = yup
   .required();
 
 const SignInForm = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -68,7 +70,11 @@ const SignInForm = () => {
           position: toast.POSITION.BOTTOM_LEFT,
           autoClose: 6000,
         });
-        history.push('/Products');
+        if (res.data?.isAdmin) {
+          navigate('/AdminHomePage');
+        } else {
+          navigate('/Products');
+        }
       }
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -133,7 +139,7 @@ const SignInForm = () => {
         <Typography>
           {' '}
           Don't have an account?{' '}
-          <Link href="#" onClick={() => history.push('/SignUp')}>
+          <Link href="#" onClick={() => navigate('/SignUp')}>
             Sign Up
           </Link>
         </Typography>

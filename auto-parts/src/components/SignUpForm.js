@@ -1,10 +1,10 @@
-import history from '../history/history';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 import {
   Grid,
@@ -62,6 +62,8 @@ const schema = yup
   .required();
 
 const SignUp = () => {
+  const navigate = useNavigate();
+
   const [onSubmitFormState, setOnSubmitFormState] = useState({
     message: '',
     isSuccessful: -1,
@@ -93,7 +95,7 @@ const SignUp = () => {
           position: toast.POSITION.BOTTOM_LEFT,
           autoClose: 6000,
         });
-        history.push('/LogIn');
+        navigate('/LogIn');
       }
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -207,7 +209,7 @@ const SignUp = () => {
         <Typography style={{ marginTop: '10px' }}>
           {' '}
           Already have an account?{' '}
-          <Link href="#" onClick={() => history.push('/LogIn')}>
+          <Link href="#" onClick={() => navigate('/LogIn')}>
             Sign In
           </Link>
         </Typography>

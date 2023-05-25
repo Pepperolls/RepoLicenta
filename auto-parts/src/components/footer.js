@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Facebook, Instagram, MailOutline, Phone } from '@mui/icons-material';
+import { useLocation } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -71,53 +72,63 @@ const Payment = styled.img`
 `;
 
 const Footer = () => {
+  const location = useLocation();
+
   return (
-    <Container position="fixed">
-      <Left>
-        <Name>CarLounge</Name>
-        <Desc>
-          Never let your car feel left out of your life. Keep it maintained,
-          using the most reliable parts provider.
-        </Desc>
-        <SocialContainer>
-          <a
-            href="https://www.facebook.com/mladin.rares/"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <SocialIcon color="2196f3">
-              <Facebook />
-            </SocialIcon>
-          </a>
-          <a
-            href="https://www.instagram.com/rares.mladin/"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <SocialIcon color="F50057">
-              <Instagram />
-            </SocialIcon>
-          </a>
-        </SocialContainer>
-      </Left>
-      <Center>
-        <img
-          src="/images/LogoWhite.png"
-          alt="White CarLounge logo"
-          style={{ position: 'fixed', right: '41%' }}
-        />
-      </Center>
-      <Right>
-        <Title>Contact</Title>
-        <ContactItem>
-          <Phone style={{ marginRight: '10px' }} /> +0712 345 678
-        </ContactItem>
-        <ContactItem>
-          <MailOutline style={{ marginRight: '10px' }} /> contact@carlounge.com
-        </ContactItem>
-        <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" />
-      </Right>
-    </Container>
+    !(
+      location?.pathname === '/AdminHomePage' ||
+      location?.pathname === '/AdminCarsPage' ||
+      location?.pathname === '/AdminUsersPage' ||
+      location?.pathname === '/AdminPartsPage'
+    ) && (
+      <Container position="fixed">
+        <Left>
+          <Name>CarLounge</Name>
+          <Desc>
+            Never let your car feel left out of your life. Keep it maintained,
+            using the most reliable parts provider.
+          </Desc>
+          <SocialContainer>
+            <a
+              href="https://www.facebook.com/mladin.rares/"
+              rel="noreferrer"
+              target="_blank"
+            >
+              <SocialIcon color="2196f3">
+                <Facebook />
+              </SocialIcon>
+            </a>
+            <a
+              href="https://www.instagram.com/rares.mladin/"
+              rel="noreferrer"
+              target="_blank"
+            >
+              <SocialIcon color="F50057">
+                <Instagram />
+              </SocialIcon>
+            </a>
+          </SocialContainer>
+        </Left>
+        <Center>
+          <img
+            src="/images/LogoWhite.png"
+            alt="White CarLounge logo"
+            style={{ position: 'fixed', right: '41%' }}
+          />
+        </Center>
+        <Right>
+          <Title>Contact</Title>
+          <ContactItem>
+            <Phone style={{ marginRight: '10px' }} /> +0712 345 678
+          </ContactItem>
+          <ContactItem>
+            <MailOutline style={{ marginRight: '10px' }} />{' '}
+            contact@carlounge.com
+          </ContactItem>
+          <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" />
+        </Right>
+      </Container>
+    )
   );
 };
 
