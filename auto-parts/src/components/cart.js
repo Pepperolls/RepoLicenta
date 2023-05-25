@@ -4,7 +4,7 @@ import history from '../history/history';
 import { Typography, Grid } from '@material-ui/core';
 import { Box } from '@mui/system';
 import { red, lightGreen } from '@mui/material/colors';
-import CartProduct from './cartproduct';
+import CartProduct from './CartProduct';
 import { useEffect } from 'react';
 
 const Info = styled.div`
@@ -26,6 +26,11 @@ const SummaryItem = styled.div`
   font-size: ${props => props.type === 'total' && '24px'};
 `;
 
+const mainDivStyle = {
+  height: '100%',
+  width: '100%',
+};
+
 const Cart = props => {
   const { parts = [], isLoadingParts = false } = props;
   const partsAddedToCart = parts.filter(part => part.isAddedToCart);
@@ -46,7 +51,7 @@ const Cart = props => {
     );
 
   return (
-    <Box>
+    <Box style={mainDivStyle}>
       <Box sx={{ bgcolor: '#002984' }}>
         <Typography align="center" style={{ color: red[50] }}>
           Free Shipping Just This Weekend!

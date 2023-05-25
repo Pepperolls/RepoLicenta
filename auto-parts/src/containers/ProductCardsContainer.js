@@ -1,6 +1,23 @@
-import { Grid, TextField, Typography } from '@material-ui/core';
-import ProductCard from '../components/productcard';
+import { Grid, TextField, Typography, Box } from '@material-ui/core';
+import ProductCard from '../components/ProductCard';
 import { useEffect, useState } from 'react';
+import MultipleSelectCheckbox from '../components/MultipleSelectCheckbox';
+import PriceSlider from '../components/PriceSlider';
+const mainGridStyle = {
+  height: '100%',
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'flex-start',
+  flexDirection: 'row',
+};
+
+const filterListStyle = {
+  display: 'flex',
+  justifyContent: 'flex-start',
+  alignItems: 'center',
+  flexDirection: 'column',
+};
 
 const ProductCardsContainer = props => {
   const { parts = [], isLoadingParts = false } = props;
@@ -18,54 +35,77 @@ const ProductCardsContainer = props => {
     );
 
   return (
-    <Grid>
-      <Grid align="center">
-        <TextField
-          margin="normal"
-          variant="outlined"
-          type="input"
-          label="Search for a part"
-          onChange={event => {
-            setSearchBy(event.target.value);
-          }}
-        />
+    <Grid container style={mainGridStyle}>
+      <Grid item xs={2}>
+        <Grid container spacing={2} style={filterListStyle}>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              type="input"
+              label="Search for a part"
+              onChange={event => {
+                setSearchBy(event.target.value);
+              }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="subtitle1">
+              <Box fontWeight="bold">Select make</Box>
+            </Typography>
+            <MultipleSelectCheckbox />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="subtitle1">
+              <Box fontWeight="bold">Select model</Box>
+            </Typography>
+            <MultipleSelectCheckbox />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="subtitle1">
+              <Box fontWeight="bold">Fuel</Box>
+            </Typography>
+            <MultipleSelectCheckbox />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="subtitle1">
+              <Box fontWeight="bold">Engine</Box>
+            </Typography>
+            <MultipleSelectCheckbox />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="subtitle1">
+              <Box fontWeight="bold">Price range</Box>
+            </Typography>
+            <PriceSlider />
+          </Grid>
+        </Grid>
       </Grid>
-      <Grid
-        container
-        spacing={5}
-        direction="row"
-        justifyContent="space-evenly"
-        alignItems="center"
-      >
-        {parts &&
-          parts
-            .filter(value => {
-              if (searchBy === '') {
-                return value;
-              } else if (
-                value.name.toLowerCase().includes(searchBy.toLowerCase())
-              ) {
-                return value;
-              }
-            })
-            .map((part, key) => (
-              <Grid item xs={12} sm={4}>
-                <ProductCard
-                  avatar={part.name[0]}
-                  title={part.name}
-                  price={part.price}
-                  imgSrc={part.imgUrl}
-                  isAddedToFavorites={part.isAddedToFavorites}
-                  description={part.description}
-                  specifications={part.category}
-                  partId={part.partModelId}
-                  carDetails={part.car}
-                  addToCart={props.addToCart}
-                  addToFavorites={props.addToFavorites}
-                  removeFromFavorites={props.removeFromFavorites}
-                />{' '}
-              </Grid>
-            ))}
+      <Grid item xs={10}>
+        <Grid container spacing={3}>
+          {parts &&
+            parts
+              .filter(part => {
+                return part.name.toLowerCase().includes(searchBy.toLowerCase());
+              })
+              .map((part, key) => (
+                <Grid item xs={12} sm={4} lg={4}>
+                  <ProductCard
+                    avatar={part.name[0]}
+                    title={part.name}
+                    price={part.price}
+                    imgSrc={part.imgUrl}
+                    isAddedToFavorites={part.isAddedToFavorites}
+                    description={part.description}
+                    specifications={part.category}
+                    partId={part.partModelId}
+                    carDetails={part.car}
+                    addToCart={props.addToCart}
+                    addToFavorites={props.addToFavorites}
+                    removeFromFavorites={props.removeFromFavorites}
+                  />
+                </Grid>
+              ))}
+        </Grid>
       </Grid>
     </Grid>
   );

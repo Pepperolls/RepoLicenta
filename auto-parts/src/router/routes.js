@@ -1,11 +1,11 @@
 import { Component } from 'react';
 import { Router, Switch, Route } from 'react-router-dom';
 import history from '../history/history';
-import HomePageContainer from '../containers/HomePageContainer';
-import ProductsContainer from '../containers/ProductsContainer';
-import LogInContainer from '../containers/LogInContainer';
-import SignUpContainer from '../containers/SignUpContainer';
-import CartContainer from '../containers/CartContainer';
+import HomePage from '../containers/HomePage';
+import ProductsPage from '../containers/ProductsPage';
+import SignInPage from '../containers/SignInPage';
+import SignUpPage from '../containers/SignUpPage';
+import CartPage from '../containers/CartPage';
 import ToBeContinued from '../containers/ToBeContinuedContainer';
 
 export default class Routes extends Component {
@@ -13,11 +13,11 @@ export default class Routes extends Component {
     return (
       <Router history={history}>
         <Switch>
-          <Route path="/" exact component={HomePageContainer} />
-          <Route path="/Products" component={ProductsContainer} />
-          <Route path="/Cart" component={CartContainer} />
-          <Route path="/SignUp" component={SignUpContainer} />
-          <Route path="/LogIn" component={LogInContainer} />
+          <Route path="/" exact component={HomePage} />
+          <Route path="/Products" component={ProductsPage} />
+          <Route path="/Cart" component={CartPage} />
+          <Route path="/SignUp" component={SignUpPage} />
+          <Route path="/LogIn" component={SignInPage} />
           <Route path="/ToBeContinued" component={ToBeContinued} />
         </Switch>
       </Router>
