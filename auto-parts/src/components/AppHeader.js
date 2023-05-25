@@ -6,24 +6,33 @@ import Button from '@mui/material/Button';
 import AppHeaderLeftButtons from './AppHeaderLeftButtons';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import history from '../history/history';
 import { red } from '@mui/material/colors';
+import { useNavigate, useLocation } from 'react-router-dom';
+import AdminHeaderButtons from './AdminHeaderButtons';
 
 const AppHeader = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const iconStyle = {
     fontSize: 30,
     color: red[50],
   };
-  return (
+
+  return !(
+    location?.pathname === '/AdminHomePage' ||
+    location?.pathname === '/AdminCarsPage' ||
+    location?.pathname === '/AdminUsersPage' ||
+    location?.pathname === '/AdminPartsPage'
+  ) ? (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <AppHeaderLeftButtons></AppHeaderLeftButtons>
           </Typography>
-          {/* <Button onClick={() => history.push('/')}> */}
 
-          <Button onClick={() => history.push('/Cart')}>
+          <Button onClick={() => navigate('/Cart')}>
             <ListItemIcon minwidth="40px">
               <ShoppingCartOutlinedIcon style={iconStyle} />
             </ListItemIcon>
@@ -32,7 +41,7 @@ const AppHeader = () => {
             variant="contained"
             color="secondary"
             size="large"
-            onClick={() => history.push('/LogIn')}
+            onClick={() => navigate('/LogIn')}
             style={{ margin: '0 8px 0 0' }}
           >
             Sign In
@@ -41,10 +50,20 @@ const AppHeader = () => {
             variant="contained"
             color="secondary"
             size="large"
-            onClick={() => history.push('/SignUp')}
+            onClick={() => navigate('/SignUp')}
           >
             Sign Up
           </Button>
+        </Toolbar>
+      </AppBar>
+    </Box>
+  ) : (
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="fixed">
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <AdminHeaderButtons></AdminHeaderButtons>
+          </Typography>
         </Toolbar>
       </AppBar>
     </Box>

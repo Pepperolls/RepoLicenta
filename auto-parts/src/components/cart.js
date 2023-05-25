@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import Button from '@mui/material/Button';
-import history from '../history/history';
 import { Typography, Grid } from '@material-ui/core';
 import { Box } from '@mui/system';
 import { red, lightGreen } from '@mui/material/colors';
 import CartProduct from './CartProduct';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Info = styled.div`
   flex: 3;
@@ -32,8 +32,12 @@ const mainDivStyle = {
 };
 
 const Cart = props => {
+  const navigate = useNavigate();
+
   const { parts = [], isLoadingParts = false } = props;
+
   const partsAddedToCart = parts.filter(part => part.isAddedToCart);
+
   const totalSum = partsAddedToCart.reduce((acc, part) => {
     acc += part.quantity * part.price;
     return acc;
@@ -110,7 +114,7 @@ const Cart = props => {
               variant="contained"
               color="primary"
               size="medium"
-              onClick={() => history.push('/Products')}
+              onClick={() => navigate('/Products')}
             >
               CONTINUE SHOPPING
             </Button>
@@ -118,7 +122,7 @@ const Cart = props => {
               variant="contained"
               size="medium"
               style={{ backgroundColor: lightGreen[700], marginLeft: '17px' }}
-              onClick={() => history.push('/ToBeContinued')}
+              onClick={() => navigate('/ToBeContinued')}
             >
               CHECKOUT NOW
             </Button>
