@@ -21,10 +21,9 @@ namespace WebApplication.Migrations
 
             modelBuilder.Entity("WebApplication.Models.CarModel", b =>
                 {
-                    b.Property<int>("CarModelId")
+                    b.Property<Guid>("CarGuid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("CubicCapacity")
                         .HasColumnType("int");
@@ -46,20 +45,16 @@ namespace WebApplication.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.HasKey("CarModelId");
+                    b.HasKey("CarGuid");
 
                     b.ToTable("Cars");
                 });
 
             modelBuilder.Entity("WebApplication.Models.PartModel", b =>
                 {
-                    b.Property<int>("PartModelId")
+                    b.Property<Guid>("PartGuid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CarModelId")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Category")
                         .IsRequired()
@@ -68,6 +63,9 @@ namespace WebApplication.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("FK_CarGuid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ImgUrl")
                         .HasColumnType("nvarchar(max)");
@@ -80,9 +78,9 @@ namespace WebApplication.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("PartModelId");
+                    b.HasKey("PartGuid");
 
-                    b.HasIndex("CarModelId");
+                    b.HasIndex("FK_CarGuid");
 
                     b.ToTable("Parts");
                 });
@@ -126,18 +124,12 @@ namespace WebApplication.Migrations
 
             modelBuilder.Entity("WebApplication.Models.PartModel", b =>
                 {
-                    b.HasOne("WebApplication.Models.CarModel", "Car")
-                        .WithMany("Parts")
-                        .HasForeignKey("CarModelId")
+                    b.HasOne("WebApplication.Models.CarModel", null)
+                        .WithMany()
+                        .HasForeignKey("FK_CarGuid")
+                        .HasConstraintName("FK_PartModel_CarModel_CarGuid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Car");
-                });
-
-            modelBuilder.Entity("WebApplication.Models.CarModel", b =>
-                {
-                    b.Navigation("Parts");
                 });
 #pragma warning restore 612, 618
         }

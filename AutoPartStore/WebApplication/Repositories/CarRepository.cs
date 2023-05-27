@@ -16,42 +16,30 @@ namespace WebApplication.Repositories
             _dbContext = dbContext;
         }
 
-        public void CreateCar(CarModel car)
+        public async Task CreateCar(CarModel car)
         {
             _dbContext.Cars.Add(car);
-            _dbContext.SaveChanges();
-        }
-        public void DeleteCar(int carId)
-        {
-            _dbContext.Cars.Remove(GetCar(carId));
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
 
-        public CarModel GetCar(int carId)
+        public async Task<IEnumerable<CarModel>> GetAllCars()
         {
-            return _dbContext.Cars.Find(carId);
-
-            //return _dbContext.Cars.Include(p => p.Parts).FirstOrDefault(x => x.CarModelId == carId);
-
+            return await _dbContext.Cars.ToListAsync();
         }
-        public IEnumerable<CarModel> GetAllCars()
+        public async Task<CarModel> GetCarByGuid(Guid carGuid)
         {
-            return _dbContext.Cars;
+            var car = await _dbContext.Cars.FirstOrDefaultAsync(c => c.CarGuid == carGuid);
+            return car;
         }
 
-        public IEnumerable<CarModel> GetAllCarsWithParts()
+        public async Task DeleteCarByGuid(Guid carGuid)
         {
-            return _dbContext.Cars.Include(x => x.Parts);
-        }
-
-        public void AddPartToCar(int carId, PartModel part)
-        {
-            _dbContext.Cars.Find(carId).Parts.Add(part);
-        }
-
-        public void PersisteCar(CarModel car)
-        {
-            _dbContext.SaveChanges();
+            var car = await GetCarByGuid(carGuid);
+            if (car != null) 
+            { 
+                _dbContext.Cars.Remove(car);
+                await _dbContext.SaveChangesAsync();
+            }
         }
     }
 }

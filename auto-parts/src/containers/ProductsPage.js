@@ -16,7 +16,7 @@ const ProductsPage = props => {
   return (
     <div style={mainGridStyle}>
       <ProductCardsContainer
-        parts={props.parts}
+        partsWithCars={props.partsWithCars}
         isLoadingParts={props.isLoadingParts}
         fetchParts={props.fetchParts}
         addToCart={props.addToCart}
@@ -30,17 +30,21 @@ const ProductsPage = props => {
 function mapStateToProps(state) {
   const {
     products: {
-      parts,
+      partsWithCars,
       partsAddedToCart,
       partsAddedToFavorites,
       isLoadingParts,
     },
   } = state;
   return {
-    parts: parts.map(p => {
-      const isAddedToCart = partsAddedToCart.includes(p.partModelId);
-      const isAddedToFavorites = partsAddedToFavorites.includes(p.partModelId);
-      return { ...p, isAddedToCart, isAddedToFavorites };
+    partsWithCars: partsWithCars.map(partWithCar => {
+      const isAddedToCart = partsAddedToCart.includes(
+        partWithCar.part.partGuid
+      );
+      const isAddedToFavorites = partsAddedToFavorites.includes(
+        partWithCar.part.partGuid
+      );
+      return { ...partWithCar, isAddedToCart, isAddedToFavorites };
     }),
 
     isLoadingParts,

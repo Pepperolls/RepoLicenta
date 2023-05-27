@@ -57,8 +57,10 @@ namespace WebApplication.Controllers
         {
             var existingUser = _userRepository.GetUserByGuid(userGuid);
 
-            if (existingUser is null)
+            if (existingUser == null)
+            {
                 return NotFound();
+            }
 
             await _userRepository.DeleteUserByGuid(existingUser.Result.UserId);
 

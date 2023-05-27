@@ -20,7 +20,7 @@ const filterListStyle = {
 };
 
 const ProductCardsContainer = props => {
-  const { parts = [], isLoadingParts = false } = props;
+  const { partsWithCars = [], isLoadingParts = false } = props;
   const [searchBy, setSearchBy] = useState('');
 
   useEffect(() => {
@@ -82,23 +82,25 @@ const ProductCardsContainer = props => {
       </Grid>
       <Grid item xs={10}>
         <Grid container spacing={3}>
-          {parts &&
-            parts
-              .filter(part => {
-                return part.name.toLowerCase().includes(searchBy.toLowerCase());
+          {partsWithCars &&
+            partsWithCars
+              .filter(partWithCar => {
+                return partWithCar.part.name
+                  .toLowerCase()
+                  .includes(searchBy.toLowerCase());
               })
-              .map((part, key) => (
+              .map((partWithCar, key) => (
                 <Grid item xs={12} sm={4} lg={4}>
                   <ProductCard
-                    avatar={part.name[0]}
-                    title={part.name}
-                    price={part.price}
-                    imgSrc={part.imgUrl}
-                    isAddedToFavorites={part.isAddedToFavorites}
-                    description={part.description}
-                    specifications={part.category}
-                    partId={part.partModelId}
-                    carDetails={part.car}
+                    avatar={partWithCar.part.name[0]}
+                    title={partWithCar.part.name}
+                    price={partWithCar.part.price}
+                    imgSrc={partWithCar.part.imgUrl}
+                    isAddedToFavorites={partWithCar.isAddedToFavorites}
+                    description={partWithCar.part.description}
+                    specifications={partWithCar.part.category}
+                    partId={partWithCar.part.partGuid}
+                    carDetails={partWithCar.car}
                     addToCart={props.addToCart}
                     addToFavorites={props.addToFavorites}
                     removeFromFavorites={props.removeFromFavorites}

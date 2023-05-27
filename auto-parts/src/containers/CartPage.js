@@ -12,10 +12,9 @@ const CartPage = props => {
   return (
     <div style={mainDivStyle}>
       <Cart
-        parts={props.parts}
+        partsWithCars={props.partsWithCars}
         isLoadingParts={props.isLoadingParts}
         fetchParts={props.fetchParts}
-        //addToCart={props.addToCart}
         removeFromCart={props.removeFromCart}
         addToTotalSum={props.addToTotalSum}
         totalSum={props.totalSum}
@@ -27,16 +26,15 @@ const CartPage = props => {
 
 function mapStateToProps(state) {
   const {
-    products: { parts, partsAddedToCart, isLoadingParts, totalSum },
+    products: { partsWithCars, partsAddedToCart, isLoadingParts, totalSum },
   } = state;
   return {
-    parts: parts.map(p => {
+    partsWithCars: partsWithCars.map(partWithCar => {
       const partAddedToCart = partsAddedToCart.find(
-        part => part.partId == p.partModelId
+        part => part.partId == partWithCar.part.partGuid
       );
-      console.log('Container log', partAddedToCart);
       return {
-        ...p,
+        ...partWithCar,
         isAddedToCart: partAddedToCart ? true : false,
         quantity: partAddedToCart ? partAddedToCart.quantity : 1,
       };

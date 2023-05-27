@@ -34,14 +34,20 @@ const mainDivStyle = {
 const Cart = props => {
   const navigate = useNavigate();
 
-  const { parts = [], isLoadingParts = false } = props;
+  const { partsWithCars = [], isLoadingParts = false } = props;
 
-  const partsAddedToCart = parts.filter(part => part.isAddedToCart);
+  const partsWithCarsAddedToCart = partsWithCars.filter(
+    partWithCar => partWithCar.isAddedToCart
+  );
 
-  const totalSum = partsAddedToCart.reduce((acc, part) => {
-    acc += part.quantity * part.price;
-    return acc;
-  }, 0);
+  const totalSum = partsWithCarsAddedToCart.reduce(
+    (acc, partWithCarAddedToCart) => {
+      acc +=
+        partWithCarAddedToCart.quantity * partWithCarAddedToCart.part.price;
+      return acc;
+    },
+    0
+  );
 
   useEffect(() => {
     props.fetchParts();
@@ -69,15 +75,15 @@ const Cart = props => {
         </Box>
         <Box style={{ display: 'flex' }}>
           <Info>
-            {partsAddedToCart.map((part, key) => {
+            {partsWithCarsAddedToCart.map((partWithCarAddedToCart, key) => {
               return (
                 <CartProduct
-                  itemId={part.partModelId}
-                  title={part.name}
-                  price={part.price}
-                  imgSrc={part.imgUrl}
-                  isAddedToCart={part.isAddedToCart}
-                  quantity={part.quantity}
+                  itemId={partWithCarAddedToCart.part.partGuid}
+                  title={partWithCarAddedToCart.part.name}
+                  price={partWithCarAddedToCart.part.price}
+                  imgSrc={partWithCarAddedToCart.part.imgUrl}
+                  isAddedToCart={partWithCarAddedToCart.isAddedToCart}
+                  quantity={partWithCarAddedToCart.quantity}
                   totalSum={props.totalSum}
                   addToTotalSum={props.addToTotalSum}
                   changeQuantity={props.changeQuantity}
