@@ -9,8 +9,8 @@ namespace WebApplication.Repositories
     {
         Task CreateUser(UserModel user);
         Task<IEnumerable<UserModel>> GetAllUsers();
-        Task DeleteUserByGuid(Guid userGuid);
         Task<UserModel> GetUserByGuid(Guid userGuid);
+        Task DeleteUserByGuid(Guid userGuid);
         Task<UserModel> GetUserByEmailAndPassword(string email, string password);
         Task<UserModel> GetUserByUsernameAndPassword(string username, string password);
         Task<UserModel> GetUserByEmail(string email);

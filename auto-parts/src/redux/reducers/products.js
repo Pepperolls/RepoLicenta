@@ -12,7 +12,7 @@ import {
 import { REHYDRATE } from 'redux-persist';
 
 const initialState = {
-  parts: [],
+  partsWithCars: [],
   isLoadingParts: false,
   partsAddedToCart: [],
   partsAddedToFavorites: [],
@@ -52,11 +52,11 @@ export default function (state = initialState, action) {
       };
     }
     case FETCH_PRODUCTS_SUCCESS: {
-      const parts = action.parts;
+      const partsWithCars = action.partsWithCars;
       return {
         ...state,
         isLoadingParts: false,
-        parts,
+        partsWithCars,
       };
     }
     case ADD_TO_CART: {

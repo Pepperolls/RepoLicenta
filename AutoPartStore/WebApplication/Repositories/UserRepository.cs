@@ -27,6 +27,12 @@ namespace WebApplication.Repositories
             return await _dbContext.Users.ToListAsync();
         }
 
+        public async Task<UserModel> GetUserByGuid(Guid userGuid)
+        {
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserId == userGuid);
+            return await Task.FromResult(user);
+        }
+
         public async Task DeleteUserByGuid(Guid userGuid)
         {
             var user = await GetUserByGuid(userGuid);
@@ -35,12 +41,6 @@ namespace WebApplication.Repositories
                 _dbContext.Users.Remove(user);
                 await _dbContext.SaveChangesAsync();
             }
-        }
-
-        public async Task<UserModel> GetUserByGuid(Guid userGuid)
-        {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserId == userGuid);
-            return await Task.FromResult(user);
         }
 
         public async Task<UserModel> GetUserByUsernameAndPassword(string username, string password)

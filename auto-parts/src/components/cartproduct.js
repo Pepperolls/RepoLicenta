@@ -40,7 +40,6 @@ const CartProduct = props => {
 
   const [quantity, setQuantity] = useState(props.quantity);
   var totalProductPrice = price * quantity;
-  console.log('CartProduct', props, quantity);
 
   return (
     <Box>

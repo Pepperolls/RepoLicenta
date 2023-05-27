@@ -14,10 +14,10 @@ export const fetchParts = () => {
   return async (dispatch, getState) => {
     dispatch({ type: FETCHING_PRODUCTS });
     const res = await axios.get(
-      process.env.REACT_APP_API_URL + '/Parts/withCars'
+      process.env.REACT_APP_API_URL + '/GetAllPartsWithCars'
     );
-    const parts = res.data;
-    dispatch({ type: FETCH_PRODUCTS_SUCCESS, parts });
+    const partsWithCars = res.data;
+    dispatch({ type: FETCH_PRODUCTS_SUCCESS, partsWithCars });
   };
 };
 

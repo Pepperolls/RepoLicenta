@@ -1,16 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using WebApplication.Models;
 
 namespace WebApplication.Repositories
 {
     public interface IPartRepository
     {
-        void CreatePart(PartModel part);
-        void DeletePart(int partId);
-        PartModel GetPart(int partId);
-        PartModel GetPartWithCar(int partId);
-        IEnumerable<PartModel> GetAllParts();
-        IEnumerable<PartModel> GetAllPartsWithCars();
-        IEnumerable<PartModel> GetPartsOfCar(int carId);
+        Task CreatePart(PartModel part);
+        Task<IEnumerable<PartModel>> GetAllParts();
+        Task<PartModel> GetPartByGuid(Guid partGuid);
+        Task DeletePartByGuid(Guid partGuid);
+        Task<IEnumerable<PartWithCar>> GetAllPartsWithCars();
+        //PartModel GetPartWithCar(int partId);
     }
 }

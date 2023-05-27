@@ -16,35 +16,44 @@ namespace WebApplication.Repositories
             _dbContext = dbContext;
         }
 
-        public void CreatePart(PartModel part)
+        public async Task CreatePart(PartModel part)
         {
             _dbContext.Parts.Add(part);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
-        public void DeletePart(int partId)
+
+        public async Task<IEnumerable<PartModel>> GetAllParts()
         {
-            _dbContext.Parts.Remove(GetPart(partId));
-            _dbContext.SaveChanges();
+            return await _dbContext.Parts.ToListAsync();
         }
-        public PartModel GetPart(int partId)
+
+        public async Task<PartModel> GetPartByGuid(Guid partGuid)
         {
-            return _dbContext.Parts.Find(partId);
+            var part = await _dbContext.Parts.FirstOrDefaultAsync(p => p.PartGuid == partGuid);
+            return await Task.FromResult(part);
         }
-        public PartModel GetPartWithCar(int partId)
+
+        public async Task DeletePartByGuid(Guid partGuid)
         {
-            return _dbContext.Parts.Include(x => x.Car).Single(x => x.PartModelId == partId);
+            var part = await GetPartByGuid(partGuid);
+            if (part != null)
+            {
+                _dbContext.Parts.Remove(part);
+                await _dbContext.SaveChangesAsync();
+            }
         }
-        public IEnumerable<PartModel> GetPartsOfCar(int carId)
+
+        public async Task<IEnumerable<PartWithCar>> GetAllPartsWithCars()
         {
-            return _dbContext.Parts.Where(p => p.CarModelId == carId);
-        }
-        public IEnumerable<PartModel> GetAllParts()
-        {
-            return _dbContext.Parts;
-        }
-        public IEnumerable<PartModel> GetAllPartsWithCars()
-        {
-            return _dbContext.Parts.Include(x => x.Car);
+            var partList = await GetAllParts();
+            var partsWithCars = partList.Select(p =>
+                                new PartWithCar
+                                {
+                                    Part = p,
+                                    Car = _dbContext.Cars.Where(c => c.CarGuid == p.FK_CarGuid).FirstOrDefault()
+                                }).ToList();
+
+            return partsWithCars;
         }
     }
 }
