@@ -1,5 +1,4 @@
 import { AppBar } from '@material-ui/core';
-import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -25,48 +24,44 @@ const AppHeader = () => {
     location?.pathname === '/AdminUsersPage' ||
     location?.pathname === '/AdminPartsPage'
   ) ? (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <AppHeaderLeftButtons></AppHeaderLeftButtons>
-          </Typography>
+    <AppBar position="relative">
+      <Toolbar>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <AppHeaderLeftButtons></AppHeaderLeftButtons>
+        </Typography>
 
-          <Button onClick={() => navigate('/Cart')}>
-            <ListItemIcon minwidth="40px">
-              <ShoppingCartOutlinedIcon style={iconStyle} />
-            </ListItemIcon>
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            size="large"
-            onClick={() => navigate('/LogIn')}
-            style={{ margin: '0 8px 0 0' }}
-          >
-            Sign In
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            size="large"
-            onClick={() => navigate('/SignUp')}
-          >
-            Sign Up
-          </Button>
-        </Toolbar>
-      </AppBar>
-    </Box>
+        <Button onClick={() => navigate('/Cart')}>
+          <ListItemIcon minwidth="40px">
+            <ShoppingCartOutlinedIcon style={iconStyle} />
+          </ListItemIcon>
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          size="large"
+          onClick={() => navigate('/LogIn')}
+          style={{ margin: '0 8px 0 0' }}
+        >
+          Sign In
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          size="large"
+          onClick={() => navigate('/SignUp')}
+        >
+          Sign Up
+        </Button>
+      </Toolbar>
+    </AppBar>
   ) : (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <AdminHeaderButtons></AdminHeaderButtons>
-          </Typography>
-        </Toolbar>
-      </AppBar>
-    </Box>
+    <AppBar position="relative">
+      <Toolbar>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <AdminHeaderButtons></AdminHeaderButtons>
+        </Typography>
+      </Toolbar>
+    </AppBar>
   );
 };
 

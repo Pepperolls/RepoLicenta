@@ -1,26 +1,19 @@
-import Cart from '../components/Cart';
+import Cart from '../components/cart';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as productActions from '../redux/actions/productActions';
 
-const mainDivStyle = {
-  minHeight: '100vh',
-  minWidth: '100vw',
-};
-
 const CartPage = props => {
   return (
-    <div style={mainDivStyle}>
-      <Cart
-        partsWithCars={props.partsWithCars}
-        isLoadingParts={props.isLoadingParts}
-        fetchParts={props.fetchParts}
-        removeFromCart={props.removeFromCart}
-        addToTotalSum={props.addToTotalSum}
-        totalSum={props.totalSum}
-        changeQuantity={props.changeQuantity}
-      />
-    </div>
+    <Cart
+      partsWithCars={props.partsWithCars}
+      isLoadingParts={props.isLoadingParts}
+      fetchParts={props.fetchParts}
+      removeFromCart={props.removeFromCart}
+      addToTotalSum={props.addToTotalSum}
+      totalSum={props.totalSum}
+      changeQuantity={props.changeQuantity}
+    />
   );
 };
 

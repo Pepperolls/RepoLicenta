@@ -3,27 +3,16 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as productActions from '../redux/actions/productActions';
 
-const mainGridStyle = {
-  minHeight: '79vh',
-  minWidth: '100vw',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-};
-
 const ProductsPage = props => {
   return (
-    <div style={mainGridStyle}>
-      <ProductCardsContainer
-        partsWithCars={props.partsWithCars}
-        isLoadingParts={props.isLoadingParts}
-        fetchParts={props.fetchParts}
-        addToCart={props.addToCart}
-        addToFavorites={props.addToFavorites}
-        removeFromFavorites={props.removeFromFavorites}
-      />
-    </div>
+    <ProductCardsContainer
+      partsWithCars={props.partsWithCars}
+      isLoadingParts={props.isLoadingParts}
+      fetchParts={props.fetchParts}
+      addToCart={props.addToCart}
+      addToFavorites={props.addToFavorites}
+      removeFromFavorites={props.removeFromFavorites}
+    />
   );
 };
 

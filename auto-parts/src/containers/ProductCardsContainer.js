@@ -3,21 +3,6 @@ import ProductCard from '../components/ProductCard';
 import { useEffect, useState } from 'react';
 import MultipleSelectCheckbox from '../components/MultipleSelectCheckbox';
 import PriceSlider from '../components/PriceSlider';
-const mainGridStyle = {
-  height: '100%',
-  width: '100%',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'flex-start',
-  flexDirection: 'row',
-};
-
-const filterListStyle = {
-  display: 'flex',
-  justifyContent: 'flex-start',
-  alignItems: 'center',
-  flexDirection: 'column',
-};
 
 const ProductCardsContainer = props => {
   const { partsWithCars = [], isLoadingParts = false } = props;
@@ -35,9 +20,9 @@ const ProductCardsContainer = props => {
     );
 
   return (
-    <Grid container style={mainGridStyle}>
+    <Grid container style={{ padding: 25 }}>
       <Grid item xs={2}>
-        <Grid container spacing={2} style={filterListStyle}>
+        <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
               variant="outlined"
@@ -90,9 +75,8 @@ const ProductCardsContainer = props => {
                   .includes(searchBy.toLowerCase());
               })
               .map((partWithCar, key) => (
-                <Grid item xs={12} sm={4} lg={4}>
+                <Grid item xs={12} sm={4} lg={3}>
                   <ProductCard
-                    avatar={partWithCar.part.name[0]}
                     title={partWithCar.part.name}
                     price={partWithCar.part.price}
                     imgSrc={partWithCar.part.imgUrl}
