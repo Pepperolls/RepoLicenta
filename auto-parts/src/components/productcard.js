@@ -6,16 +6,13 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import { Button } from '@material-ui/core';
 import { Box } from '@mui/system';
-import { lightGreen } from '@mui/material/colors';
 
 const ExpandMore = styled(props => {
   const { expand, ...other } = props;
@@ -36,7 +33,6 @@ const ProductCard = props => {
   };
 
   const {
-    avatar,
     title,
     price,
     description,
@@ -50,10 +46,14 @@ const ProductCard = props => {
   const carDetailsShown = `For: ${carDetails.make} ${carDetails.model}, 
   ${carDetails.fabricationYear}, ${carDetails.fuelType}, ${carDetails.cubicCapacity} cmc`;
 
+  const cardStyle = {
+    boxShadow:
+      '0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 -1px 2px 0 rgba(0, 0, 0, 0.2)',
+  };
+
   return (
-    <Card>
+    <Card style={cardStyle}>
       <CardHeader
-        avatar={<Avatar sx={{ bgcolor: red[500] }}>{avatar}</Avatar>}
         action={
           <IconButton
             aria-label="add to favorites"
@@ -71,6 +71,10 @@ const ProductCard = props => {
           </IconButton>
         }
         title={title}
+        titleTypographyProps={{
+          variant: 'h5',
+          fontWeight: 600,
+        }}
         subheader={'$' + price}
       />
       <CardMedia

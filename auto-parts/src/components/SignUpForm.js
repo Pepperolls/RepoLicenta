@@ -19,12 +19,10 @@ import { useState } from 'react';
 toast.configure();
 
 const mainGridStyle = {
-  minHeight: '88.5vh',
-  minWidth: '100vw',
   display: 'flex',
-  flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
+  marginTop: 'auto',
 };
 
 const paperStyle = {

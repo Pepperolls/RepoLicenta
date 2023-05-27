@@ -24,7 +24,13 @@ ReactDOM.render(
     <PersistGate loading={null} persistor={persistor}>
       <StyledEngineProvider injectFirst>
         <Router>
-          <div className="App">
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              minHeight: '100vh',
+            }}
+          >
             <AppHeader />
             <Routes>
               <Route path="/" element={<HomePage />} />
