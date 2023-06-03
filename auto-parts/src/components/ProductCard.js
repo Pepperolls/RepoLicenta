@@ -70,12 +70,8 @@ const ProductCard = props => {
             )}
           </IconButton>
         }
-        title={title}
-        titleTypographyProps={{
-          variant: 'h5',
-          fontWeight: 600,
-        }}
-        subheader={'$' + price}
+        title={<h5 style={{ margin: 0 }}>{title}</h5>}
+        subheader={<h4 style={{ margin: 0 }}>{'$' + price}</h4>}
       />
       <CardMedia
         style={{

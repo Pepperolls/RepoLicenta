@@ -1,8 +1,8 @@
-import { Grid, TextField, Typography, Box } from '@material-ui/core';
-import ProductCard from '../components/ProductCard';
 import { useEffect, useState } from 'react';
-import MultipleSelectCheckbox from '../components/MultipleSelectCheckbox';
+import { Grid, TextField, Typography, Box, Paper } from '@material-ui/core';
+import ProductCard from '../components/ProductCard';
 import PriceSlider from '../components/PriceSlider';
+import MultipleSelectCheckbox from '../components/MultipleSelectCheckbox';
 
 const ProductCardsContainer = props => {
   const { partsWithCars = [], isLoadingParts = false } = props;
@@ -19,51 +19,66 @@ const ProductCardsContainer = props => {
       </Grid>
     );
 
+  const centeredDiv = {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  };
+
   return (
-    <Grid container style={{ padding: 25 }}>
+    <Grid container style={{ padding: 25 }} spacing={4}>
       <Grid item xs={2}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TextField
-              variant="outlined"
-              type="input"
-              label="Search for a part"
-              onChange={event => {
-                setSearchBy(event.target.value);
-              }}
-            />
+        <Paper
+          style={{
+            padding: 15,
+            boxShadow:
+              '0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 -1px 2px 0 rgba(0, 0, 0, 0.2)',
+          }}
+        >
+          <Grid container spacing={2} style={centeredDiv}>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                type="input"
+                label="Search for a part"
+                onChange={event => {
+                  setSearchBy(event.target.value);
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="subtitle1">
+                <Box fontWeight="bold">Select make</Box>
+              </Typography>
+              <MultipleSelectCheckbox />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="subtitle1">
+                <Box fontWeight="bold">Select model</Box>
+              </Typography>
+              <MultipleSelectCheckbox />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="subtitle1">
+                <Box fontWeight="bold">Fuel</Box>
+              </Typography>
+              <MultipleSelectCheckbox />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="subtitle1">
+                <Box fontWeight="bold">Engine</Box>
+              </Typography>
+              <MultipleSelectCheckbox />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="subtitle1">
+                <Box fontWeight="bold">Price range</Box>
+              </Typography>
+              <PriceSlider />
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <Typography variant="subtitle1">
-              <Box fontWeight="bold">Select make</Box>
-            </Typography>
-            <MultipleSelectCheckbox />
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="subtitle1">
-              <Box fontWeight="bold">Select model</Box>
-            </Typography>
-            <MultipleSelectCheckbox />
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="subtitle1">
-              <Box fontWeight="bold">Fuel</Box>
-            </Typography>
-            <MultipleSelectCheckbox />
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="subtitle1">
-              <Box fontWeight="bold">Engine</Box>
-            </Typography>
-            <MultipleSelectCheckbox />
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="subtitle1">
-              <Box fontWeight="bold">Price range</Box>
-            </Typography>
-            <PriceSlider />
-          </Grid>
-        </Grid>
+        </Paper>
       </Grid>
       <Grid item xs={10}>
         <Grid container spacing={3}>

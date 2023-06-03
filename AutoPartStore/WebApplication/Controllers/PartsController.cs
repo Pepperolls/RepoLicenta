@@ -29,12 +29,32 @@ namespace WebApplication.Controllers
 
             if (existingCar == null)
             { 
-                return BadRequest(new { message = "The referenced car Guid does not exist!" }); 
+                return NotFound(new { message = "The referenced car Guid does not exist!" }); 
             }
 
             await _partRepository.CreatePart(partModel);
 
             return CreatedAtAction(nameof(CreatePart), new { id = partModel.PartGuid }, partModel);
+        }
+
+        [HttpPut("/UpdatePart/{partToModifyGuid}")]
+        public async Task<ActionResult<PartModel>> UpdatePart(Guid partToModifyGuid, [FromBody] PartModel partModel)
+        {
+            var response = await _partRepository.UpdatePart(partToModifyGuid, partModel);
+
+            CarModel existingCar = await _carRepository.GetCarByGuid(partModel.FK_CarGuid);
+
+            if (existingCar == null)
+            {
+                return NotFound(new { message = "The referenced car Guid does not exist!" });
+            }
+
+            if (response == null)
+            {
+                return NotFound(new { message = "The given part Guid does not exist!" });
+            }
+
+            return Ok(response);
         }
 
         [HttpGet("/GetAllParts")]
@@ -53,19 +73,19 @@ namespace WebApplication.Controllers
             return part;
         }
 
-        [HttpDelete("/DeletePartByGuid/{partGuid}")]
-        public async Task<IActionResult> DeletePartByGuid(Guid partGuid)
+        [HttpDelete("/DeletePartByGuid/{partToDeleteGuid}")]
+        public async Task<IActionResult> DeletePartByGuid(Guid partToDeleteGuid)
         {
-            var existingPart = _partRepository.GetPartByGuid(partGuid);
+            var existingPart = await _partRepository.GetPartByGuid(partToDeleteGuid);
 
             if (existingPart == null)
             {
-                return NotFound();
+                return NotFound(new { message = "The given part Guid does not exist!" });
             }
 
-            await _partRepository.DeletePartByGuid(existingPart.Result.PartGuid);
+            await _partRepository.DeletePartByGuid(existingPart.PartGuid);
 
-            return NoContent();
+            return Ok();
         }
 
         [HttpGet("/GetAllPartsWithCars")]

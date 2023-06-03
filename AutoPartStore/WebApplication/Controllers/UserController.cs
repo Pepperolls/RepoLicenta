@@ -55,14 +55,14 @@ namespace WebApplication.Controllers
         [HttpDelete("/DeleteUserByGuid/{userGuid}")]
         public async Task<IActionResult> DeleteUserByGuid(Guid userGuid)
         {
-            var existingUser = _userRepository.GetUserByGuid(userGuid);
+            var existingUser = await _userRepository.GetUserByGuid(userGuid);
 
             if (existingUser == null)
             {
                 return NotFound();
             }
 
-            await _userRepository.DeleteUserByGuid(existingUser.Result.UserId);
+            await _userRepository.DeleteUserByGuid(existingUser.UserId);
 
             return NoContent();
         }

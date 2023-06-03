@@ -8,6 +8,7 @@ namespace WebApplication.Repositories
     public interface IPartRepository
     {
         Task CreatePart(PartModel part);
+        Task<PartModel> UpdatePart(Guid partToModifyGuid, PartModel part);
         Task<IEnumerable<PartModel>> GetAllParts();
         Task<PartModel> GetPartByGuid(Guid partGuid);
         Task DeletePartByGuid(Guid partGuid);

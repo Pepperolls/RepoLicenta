@@ -22,6 +22,37 @@ namespace WebApplication.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task<PartModel> UpdatePart(Guid partToModifyGuid, PartModel part)
+        {
+            var partToModify = await _dbContext.Parts.FirstOrDefaultAsync(p => p.PartGuid == partToModifyGuid);
+
+            if (partToModify == null)
+            {
+                return null;
+            }
+
+            partToModify.PartGuid = partToModifyGuid;
+            var carToReference = await _dbContext.Cars.FirstOrDefaultAsync(c => c.CarGuid == part.FK_CarGuid);
+
+            if (carToReference == null) 
+            {
+                return null;
+            }
+
+            partToModify.FK_CarGuid = part.FK_CarGuid;
+            partToModify.Name = part.Name;
+            partToModify.Price = part.Price;
+            partToModify.Category = part.Category;
+            partToModify.Description = part.Description;
+            partToModify.ImgUrl = part.ImgUrl;
+
+            _dbContext.Parts.Update(partToModify);
+
+            await _dbContext.SaveChangesAsync();
+
+            return partToModify;
+        }
+
         public async Task<IEnumerable<PartModel>> GetAllParts()
         {
             return await _dbContext.Parts.ToListAsync();
@@ -30,7 +61,7 @@ namespace WebApplication.Repositories
         public async Task<PartModel> GetPartByGuid(Guid partGuid)
         {
             var part = await _dbContext.Parts.FirstOrDefaultAsync(p => p.PartGuid == partGuid);
-            return await Task.FromResult(part);
+            return part;
         }
 
         public async Task DeletePartByGuid(Guid partGuid)
