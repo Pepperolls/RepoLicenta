@@ -3,6 +3,7 @@ import { TextField, Typography, Button } from '@material-ui/core';
 import { Box } from '@mui/system';
 import { useState } from 'react';
 import { red } from '@mui/material/colors';
+import { Paper } from '@mui/material';
 
 const Product = styled.div`
   display: flex;
@@ -42,7 +43,13 @@ const CartProduct = props => {
   var totalProductPrice = price * quantity;
 
   return (
-    <Box>
+    <Paper
+      style={{
+        padding: 15,
+        boxShadow:
+          '0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 -1px 2px 0 rgba(0, 0, 0, 0.2)',
+      }}
+    >
       <Product>
         <ProductDetail>
           <img src={imgSrc} width="200px" alt="Product" />
@@ -87,7 +94,7 @@ const CartProduct = props => {
         </PriceDetail>
       </Product>
       <Hr />
-    </Box>
+    </Paper>
   );
 };
 

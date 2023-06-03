@@ -55,14 +55,14 @@ namespace WebApplication.Controllers
         [HttpDelete("/DeleteCarByGuid/{carGuid}")]
         public async Task<IActionResult> DeleteCarByGuid(Guid carGuid)
         {
-            var existingCar = _carRepository.GetCarByGuid(carGuid);
+            var existingCar = await _carRepository.GetCarByGuid(carGuid);
 
             if (existingCar == null)
             {
                 return NotFound();
             }
 
-            await _carRepository.DeleteCarByGuid(existingCar.Result.CarGuid);
+            await _carRepository.DeleteCarByGuid(existingCar.CarGuid);
 
             return NoContent();
         }

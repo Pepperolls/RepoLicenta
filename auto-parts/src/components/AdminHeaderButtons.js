@@ -5,6 +5,7 @@ import ListItemText from '@mui/material/ListItemText';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import DirectionsCarOutlinedIcon from '@mui/icons-material/DirectionsCarOutlined';
 import ConstructionOutlinedIcon from '@mui/icons-material/ConstructionOutlined';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { red } from '@mui/material/colors';
 import { Button } from '@material-ui/core';
 import styled from 'styled-components';
@@ -48,6 +49,17 @@ const AdminHeaderButtons = () => {
   return (
     <Box sx={mainDivStyle}>
       <HeaderList>
+        <HeaderListItem>
+          <Button
+            onClick={() => navigate('/AdminHomePage')}
+            style={buttonStyle}
+          >
+            <ListItemIcon sx={listItemIconStyle}>
+              <HomeOutlinedIcon style={iconStyle} />
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+          </Button>
+        </HeaderListItem>
         <HeaderListItem>
           <Button
             onClick={() => navigate('/AdminUsersPage')}

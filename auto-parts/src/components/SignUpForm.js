@@ -14,7 +14,6 @@ import {
   Typography,
   Link,
 } from '@material-ui/core';
-import { useState } from 'react';
 
 toast.configure();
 
@@ -61,11 +60,6 @@ const schema = yup
 
 const SignUp = () => {
   const navigate = useNavigate();
-
-  const [onSubmitFormState, setOnSubmitFormState] = useState({
-    message: '',
-    isSuccessful: -1,
-  });
 
   const {
     register,
@@ -205,7 +199,6 @@ const SignUp = () => {
           Sign Up
         </Button>
         <Typography style={{ marginTop: '10px' }}>
-          {' '}
           Already have an account?{' '}
           <Link href="#" onClick={() => navigate('/LogIn')}>
             Sign In
