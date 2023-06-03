@@ -22,6 +22,30 @@ namespace WebApplication.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task<CarModel> UpdateCar(Guid carToModifyGuid, CarModel car)
+        {
+            var carToModify = await _dbContext.Cars.FirstOrDefaultAsync(c => c.CarGuid == carToModifyGuid);
+
+            if (carToModify == null)
+            {
+                return null;
+            }
+
+            carToModify.CarGuid = carToModifyGuid;
+
+            carToModify.Make = car.Make;
+            carToModify.Model = car.Model;
+            carToModify.FabricationYear = car.FabricationYear;
+            carToModify.CubicCapacity = car.CubicCapacity;
+            carToModify.FuelType = car.FuelType;
+
+            _dbContext.Cars.Update(carToModify);
+
+            await _dbContext.SaveChangesAsync();
+
+            return carToModify;
+        }
+
         public async Task<IEnumerable<CarModel>> GetAllCars()
         {
             return await _dbContext.Cars.ToListAsync();

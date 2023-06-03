@@ -29,7 +29,7 @@ namespace WebApplication.Controllers
 
             if (existingCar == null)
             { 
-                return NotFound(new { message = "The referenced car Guid does not exist!" }); 
+                return NotFound(new { message = "There is no car with the given Guid!" }); 
             }
 
             await _partRepository.CreatePart(partModel);
@@ -46,12 +46,12 @@ namespace WebApplication.Controllers
 
             if (existingCar == null)
             {
-                return NotFound(new { message = "The referenced car Guid does not exist!" });
+                return NotFound(new { message = "There is no car with the given Guid!" });
             }
 
             if (response == null)
             {
-                return NotFound(new { message = "The given part Guid does not exist!" });
+                return NotFound(new { message = "There is no part with the given Guid!" });
             }
 
             return Ok(response);
@@ -80,7 +80,7 @@ namespace WebApplication.Controllers
 
             if (existingPart == null)
             {
-                return NotFound(new { message = "The given part Guid does not exist!" });
+                return NotFound(new { message = "There is no part with the given Guid!" });
             }
 
             await _partRepository.DeletePartByGuid(existingPart.PartGuid);

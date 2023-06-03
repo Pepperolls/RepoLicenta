@@ -48,8 +48,8 @@ const schema = yup
     username: yup.string().required('Username is required.'),
     password: yup
       .string()
-      .min(4, 'The password must have at least 4 characters.')
-      .required('Password is required.'),
+      .required('Password is required.')
+      .min(4, 'The password must have at least 4 characters.'),
     confirmPassword: yup
       .string()
       .oneOf([yup.ref('password'), null], 'The passwords should match.'),
