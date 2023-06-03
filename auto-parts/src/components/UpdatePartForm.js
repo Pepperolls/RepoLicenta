@@ -50,8 +50,8 @@ const schema = yup
       .required('The referenced car Guid is required.'),
     partName: yup
       .string('The part name must be a valid string.')
-      .min(4, 'The part name must have at least 4 characters.')
-      .required('The part name is required.'),
+      .required('The part name is required.')
+      .min(4, 'The part name must have at least 4 characters.'),
     partPrice: yup
       .number('The price must be a valid number.')
       .typeError('The price must be a valid number.')

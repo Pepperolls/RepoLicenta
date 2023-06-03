@@ -20,20 +20,24 @@ namespace WebApplication.Controllers
         }
 
         [HttpPost("/CreateCar")]
-        public async Task<ActionResult<CarModel>> CreateCar(string make, string model, int fabricationYear, int cubicCapacity, string fuelType)
+        public async Task<ActionResult<CarModel>> CreateCar([FromBody] CarModel carModel)
         {
-            var carModel = new CarModel(make, model, fabricationYear, cubicCapacity, fuelType)
-            {
-                Make = make,
-                Model = model,
-                FabricationYear = fabricationYear,
-                CubicCapacity = cubicCapacity,
-                FuelType = fuelType
-            };
-
             await _carRepository.CreateCar(carModel);
 
             return CreatedAtAction(nameof(CreateCar), new { id = carModel.CarGuid }, carModel);
+        }
+
+        [HttpPut("/UpdateCar/{carToModifyGuid}")]
+        public async Task<ActionResult<CarModel>> UpdateCar(Guid carToModifyGuid, [FromBody] CarModel carModel)
+        {
+            var response = await _carRepository.UpdateCar(carToModifyGuid, carModel);
+
+            if (response == null)
+            {
+                return NotFound(new { message = "There is no car with the given Guid!" });
+            }
+
+            return Ok(response);
         }
 
         [HttpGet("/GetAllCars")]
@@ -52,19 +56,19 @@ namespace WebApplication.Controllers
             return car;
         }
 
-        [HttpDelete("/DeleteCarByGuid/{carGuid}")]
-        public async Task<IActionResult> DeleteCarByGuid(Guid carGuid)
+        [HttpDelete("/DeleteCarByGuid/{carToDeleteGuid}")]
+        public async Task<IActionResult> DeleteCarByGuid(Guid carToDeleteGuid)
         {
-            var existingCar = await _carRepository.GetCarByGuid(carGuid);
+            var existingCar = await _carRepository.GetCarByGuid(carToDeleteGuid);
 
             if (existingCar == null)
             {
-                return NotFound();
+                return NotFound(new { message = "There is no car with the given Guid!" });
             }
 
             await _carRepository.DeleteCarByGuid(existingCar.CarGuid);
 
-            return NoContent();
+            return Ok();
         }
     }
 }

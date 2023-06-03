@@ -42,17 +42,17 @@ const schema = yup
   .shape({
     referencedCarGuid: yup
       .string()
-      .matches(guidRegex, 'This field should be a GUID.')
-      .required('The referenced car Guid is required.'),
+      .required('The referenced car Guid is required.')
+      .matches(guidRegex, 'This field should be a GUID.'),
     partName: yup
       .string('The part name must be a valid string.')
-      .min(4, 'The part name must have at least 4 characters.')
-      .required('The part name is required.'),
+      .required('The part name is required.')
+      .min(4, 'The part name must have at least 4 characters.'),
     partPrice: yup
       .number('The price must be a valid number.')
+      .required('The price is required.')
       .typeError('The price must be a valid number.')
-      .positive('The price must be a positive number.')
-      .required('The price is required.'),
+      .positive('The price must be a positive number.'),
     partCategory: yup.string(),
     partDescription: yup.string(),
     partImageUrl: yup.string(),
