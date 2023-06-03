@@ -1,7 +1,7 @@
-import AddCarForm from '../components/AddCarForm';
-import DeleteCarForm from '../components/DeleteCarForm';
-import UpdateCarForm from '../components/UpdateCarForm';
 import { Grid } from '@mui/material';
+import AddCarForm from '../components/AdminPageComponents/CarForms/AddCarForm';
+import DeleteCarForm from '../components/AdminPageComponents/CarForms/DeleteCarForm';
+import UpdateCarForm from '../components/AdminPageComponents/CarForms/UpdateCarForm';
 
 const AdminCarsPage = () => {
   const centeredDiv = {

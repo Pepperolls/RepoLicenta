@@ -35,6 +35,19 @@ namespace WebApplication.Controllers
             return CreatedAtAction(nameof(CreateUser), new { id = user.UserId }, user);
         }
 
+        [HttpPut("/UpdateUser/{userToModifyGuid}")]
+        public async Task<ActionResult<UserController>> UpdateUser(Guid userToModifyGuid, [FromBody] UserModel userModel)
+        {
+            var response = await _userRepository.UpdateUser(userToModifyGuid, userModel);
+
+            if (response == null)
+            {
+                return NotFound(new { message = "There is no user with the given Guid!" });
+            }
+
+            return Ok(response);
+        }
+
         [HttpGet("/GetAllUsers")]
         public async Task<ActionResult<IEnumerable<UserModel>>> GetAllUsers()
         {
@@ -59,7 +72,7 @@ namespace WebApplication.Controllers
 
             if (existingUser == null)
             {
-                return NotFound();
+                return NotFound(new { message = "No user has been found with the given credentials." });
             }
 
             await _userRepository.DeleteUserByGuid(existingUser.UserId);

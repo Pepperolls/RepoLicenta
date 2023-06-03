@@ -8,6 +8,7 @@ namespace WebApplication.Repositories
     public interface IUserRepository
     {
         Task CreateUser(UserModel user);
+        Task<UserModel> UpdateUser(Guid userToModifyGuid, UserModel user);
         Task<IEnumerable<UserModel>> GetAllUsers();
         Task<UserModel> GetUserByGuid(Guid userGuid);
         Task DeleteUserByGuid(Guid userGuid);
