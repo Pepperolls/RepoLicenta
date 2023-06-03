@@ -22,6 +22,30 @@ namespace WebApplication.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task<UserModel> UpdateUser(Guid userToModifyGuid, UserModel user)
+        {
+            var userToModify = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserId == userToModifyGuid);
+
+            if (userToModify == null)
+            {
+                return null;
+            }
+
+            userToModify.UserId = userToModifyGuid;
+            userToModify.Email = user.Email;
+            userToModify.Username = user.Username;
+            userToModify.FirstName = user.FirstName;
+            userToModify.LastName = user.LastName;
+            userToModify.Password = user.Password;
+            userToModify.IsAdmin = user.IsAdmin;
+
+            _dbContext.Users.Update(userToModify);
+
+            await _dbContext.SaveChangesAsync();
+
+            return userToModify;
+        }
+
         public async Task<IEnumerable<UserModel>> GetAllUsers()
         {
             return await _dbContext.Users.ToListAsync();

@@ -106,7 +106,7 @@ const UpdateCarForm = () => {
     <Grid container style={mainGridStyle}>
       <Paper elevation={10} style={paperStyle}>
         <h2>Update an existing car</h2>
-        <form id="addCarForm" onSubmit={handleSubmit(submitUpdateCarForm)}>
+        <form id="updateCarForm" onSubmit={handleSubmit(submitUpdateCarForm)}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
