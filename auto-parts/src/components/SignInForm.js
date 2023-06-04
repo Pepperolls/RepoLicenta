@@ -13,6 +13,9 @@ import * as yup from 'yup';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as userActions from '../redux/actions/UserActions';
 
 toast.configure();
 
@@ -45,7 +48,7 @@ const schema = yup
   })
   .required();
 
-const SignInForm = () => {
+const SignInForm = props => {
   const navigate = useNavigate();
 
   const {
@@ -64,6 +67,7 @@ const SignInForm = () => {
       );
 
       if (res) {
+        props.loginUser(res.data);
         toast.success('Logged in successfully!', {
           position: toast.POSITION.BOTTOM_LEFT,
           autoClose: 6000,
@@ -146,4 +150,15 @@ const SignInForm = () => {
   );
 };
 
-export default SignInForm;
+function mapStateToProps(state) {
+  const { loggedInUser: loggedInUser } = state;
+  return {
+    loggedInUser: loggedInUser,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return { ...bindActionCreators(userActions, dispatch) };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignInForm);
