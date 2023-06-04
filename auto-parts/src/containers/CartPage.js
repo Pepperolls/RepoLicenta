@@ -1,7 +1,7 @@
 import Cart from '../components/Cart';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as productActions from '../redux/actions/productActions';
+import * as productActions from '../redux/actions/ProductActions';
 
 const CartPage = props => {
   return (

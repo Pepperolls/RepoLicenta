@@ -7,7 +7,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import Footer from './components/Footer';
 import './App.css';
 import { StyledEngineProvider } from '@mui/material/styles';
-import AppHeader from './components/AppHeader';
+import AppHeader from './components/Header/AppHeader';
 import HomePage from './containers/HomePage';
 import AdminHomePage from './containers/AdminHomePage';
 import AdminUsersPage from './containers/AdminUsersPage';

@@ -19,13 +19,13 @@ const HeaderList = styled.ul`
 
 const HeaderListItem = styled.li`
   display: inline;
-  margin-right: 20px;
+  margin-right: 10px;
 `;
 
 const mainDivStyle = {
   width: '100%',
   display: 'flex',
-  justifyContent: 'center',
+  justifyContent: 'flex-start',
   alignItems: 'center',
   bgcolor: 'primary',
 };
@@ -48,7 +48,7 @@ const AdminHeaderButtons = () => {
 
   return (
     <Box sx={mainDivStyle}>
-      <HeaderList>
+      <HeaderList style={{ margin: 0 }}>
         <HeaderListItem>
           <Button
             onClick={() => navigate('/AdminHomePage')}
