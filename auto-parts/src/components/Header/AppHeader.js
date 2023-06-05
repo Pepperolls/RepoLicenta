@@ -1,6 +1,6 @@
 import { AppBar } from '@material-ui/core';
 import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
+import Button from '@material-ui/core/Button';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { red } from '@mui/material/colors';
@@ -26,7 +26,6 @@ const AppHeader = props => {
     '/AdminUsersPage',
     '/AdminPartsPage',
   ];
-  console.log(props);
 
   return !pathNames.includes(location?.pathname) ? (
     <AppBar position="relative">
@@ -79,9 +78,7 @@ const AppHeader = props => {
         <div style={{ flexGrow: 1 }}>
           <AdminHeaderButtons></AdminHeaderButtons>
         </div>
-        {props.loggedInUser === null ? (
-          <></>
-        ) : (
+        {props.loggedInUser === null ? null : (
           <Button
             variant="contained"
             color="secondary"

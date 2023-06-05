@@ -151,9 +151,9 @@ const SignInForm = props => {
 };
 
 function mapStateToProps(state) {
-  const { loggedInUser: loggedInUser } = state;
+  const { loggedInUser } = state;
   return {
-    loggedInUser: loggedInUser,
+    loggedInUser,
   };
 }
 

@@ -64,9 +64,10 @@ const Cart = props => {
       </Box>
       <Box style={{ display: 'flex' }}>
         <Info>
-          {partsWithCarsAddedToCart.map((partWithCarAddedToCart, key) => {
+          {partsWithCarsAddedToCart.map((partWithCarAddedToCart, index) => {
             return (
               <CartProduct
+                key={index}
                 itemId={partWithCarAddedToCart.part.partGuid}
                 title={partWithCarAddedToCart.part.name}
                 price={partWithCarAddedToCart.part.price}

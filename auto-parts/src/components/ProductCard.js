@@ -86,8 +86,8 @@ const ProductCard = props => {
           src={imgSrc}
           alt="Product"
           style={{
-            maxWidth: '280px',
-            maxHeight: '280px',
+            width: '280px',
+            height: '280px',
             objectFit: 'contain',
           }}
         ></img>

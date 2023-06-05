@@ -24,7 +24,7 @@ function mapStateToProps(state) {
   return {
     partsWithCars: partsWithCars.map(partWithCar => {
       const partAddedToCart = partsAddedToCart.find(
-        part => part.partId == partWithCar.part.partGuid
+        part => part.partId === partWithCar.part.partGuid
       );
       return {
         ...partWithCar,
