@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { TextField, Typography, Button } from '@material-ui/core';
-import { Box } from '@mui/system';
 import { useState } from 'react';
 import { red } from '@mui/material/colors';
 import { Paper } from '@mui/material';
@@ -37,7 +36,7 @@ const Hr = styled.hr`
 `;
 
 const CartProduct = props => {
-  const { itemId, title, price, imgSrc, isAddedToCart } = props;
+  const { itemId, title, price, imgSrc } = props;
 
   const [quantity, setQuantity] = useState(props.quantity);
   var totalProductPrice = price * quantity;

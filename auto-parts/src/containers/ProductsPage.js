@@ -8,6 +8,7 @@ const ProductsPage = props => {
     <ProductCardsContainer
       partsWithCars={props.partsWithCars}
       isLoadingParts={props.isLoadingParts}
+      cars={props.cars}
       fetchParts={props.fetchParts}
       addToCart={props.addToCart}
       addToFavorites={props.addToFavorites}
@@ -35,8 +36,14 @@ function mapStateToProps(state) {
       );
       return { ...partWithCar, isAddedToCart, isAddedToFavorites };
     }),
-
     isLoadingParts,
+    cars: Array.from(
+      new Set(partsWithCars.map(partWithCar => partWithCar.car.carGuid))
+    ).map(carGuid => {
+      return partsWithCars.find(
+        partWithCar => partWithCar.car.carGuid === carGuid
+      ).car;
+    }),
   };
 }
 

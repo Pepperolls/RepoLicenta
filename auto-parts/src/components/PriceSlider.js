@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { Slider, Grid, Input } from '@mui/material';
+import { useEffect } from 'react';
 
 const mainDivStyle = {
   width: '215px',
@@ -9,52 +9,58 @@ const priceInputStyle = {
   width: '80px',
 };
 
-export default function PriceSlider() {
-  const [range, setRange] = useState([0, 900]); // Initial price range values
+const PriceSlider = props => {
+  const { priceRange = [], minPrice, maxPrice } = props;
 
   const handleRangeChange = (event, newValue) => {
-    setRange(newValue);
+    props.handlePriceRangeChange(newValue);
   };
 
+  useEffect(() => {
+    props.handlePriceRangeChange([minPrice, maxPrice]);
+  }, []);
+
   const handleInputChange = inputIndex => event => {
-    const newRange = [...range];
+    const newRange = [...priceRange];
     newRange[inputIndex] =
       event.target.value === '' ? 0 : Number(event.target.value);
-    setRange(newRange);
+    props.handlePriceRangeChange(newRange);
   };
 
   return (
     <div style={mainDivStyle}>
       <Slider
-        value={range}
+        value={priceRange}
         onChange={handleRangeChange}
-        min={0}
-        max={900}
+        min={minPrice}
+        max={maxPrice}
         valueLabelDisplay="auto"
       />
       <Grid container spacing={2} justifyContent="center" alignItems="center">
-        <Grid item>
+        <Grid item padding={0} xs={5}>
           <Input
-            value={range[0]}
+            value={priceRange[0]}
             onChange={handleInputChange(0)}
             type="number"
             inputProps={{
-              min: 0,
-              max: 900,
+              min: minPrice,
+              max: maxPrice,
               style: { textAlign: 'center' },
             }}
             style={priceInputStyle}
           />
         </Grid>
-        <Grid item>-</Grid>
-        <Grid item>
+        <Grid item style={{ textAlign: 'center' }} padding={0} xs={2}>
+          -
+        </Grid>
+        <Grid item padding={0} xs={5}>
           <Input
-            value={range[1]}
+            value={priceRange[1]}
             onChange={handleInputChange(1)}
             type="number"
             inputProps={{
-              min: 0,
-              max: 900,
+              min: minPrice,
+              max: maxPrice,
               style: { textAlign: 'center' },
             }}
             style={priceInputStyle}
@@ -63,4 +69,6 @@ export default function PriceSlider() {
       </Grid>
     </div>
   );
-}
+};
+
+export default PriceSlider;

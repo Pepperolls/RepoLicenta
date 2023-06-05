@@ -6,7 +6,6 @@ import { store, persistor } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import Footer from './components/Footer';
 import './App.css';
-import { StyledEngineProvider } from '@mui/material/styles';
 import AppHeader from './components/Header/AppHeader';
 import HomePage from './containers/HomePage';
 import AdminHomePage from './containers/AdminHomePage';
@@ -22,32 +21,30 @@ import ToBeContinued from './containers/ToBeContinuedContainer';
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <StyledEngineProvider injectFirst>
-        <Router>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              minHeight: '100vh',
-            }}
-          >
-            <AppHeader />
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/AdminHomePage" element={<AdminHomePage />} />
-              <Route path="/AdminUsersPage" element={<AdminUsersPage />} />
-              <Route path="/AdminCarsPage" element={<AdminCarsPage />} />
-              <Route path="/AdminPartsPage" element={<AdminPartsPage />} />
-              <Route path="/Products" element={<ProductsPage />} />
-              <Route path="/Cart" element={<CartPage />} />
-              <Route path="/SignUp" element={<SignUpPage />} />
-              <Route path="/LogIn" element={<SignInPage />} />
-              <Route path="/ToBeContinued" element={<ToBeContinued />} />
-            </Routes>
-            <Footer />
-          </div>
-        </Router>
-      </StyledEngineProvider>
+      <Router>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: '100vh',
+          }}
+        >
+          <AppHeader />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/AdminHomePage" element={<AdminHomePage />} />
+            <Route path="/AdminUsersPage" element={<AdminUsersPage />} />
+            <Route path="/AdminCarsPage" element={<AdminCarsPage />} />
+            <Route path="/AdminPartsPage" element={<AdminPartsPage />} />
+            <Route path="/Products" element={<ProductsPage />} />
+            <Route path="/Cart" element={<CartPage />} />
+            <Route path="/SignUp" element={<SignUpPage />} />
+            <Route path="/LogIn" element={<SignInPage />} />
+            <Route path="/ToBeContinued" element={<ToBeContinued />} />
+          </Routes>
+          <Footer />
+        </div>
+      </Router>
     </PersistGate>
   </Provider>,
   document.getElementById('root')
