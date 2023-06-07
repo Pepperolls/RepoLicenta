@@ -13,6 +13,5 @@ namespace WebApplication.Repositories
         Task<PartModel> GetPartByGuid(Guid partGuid);
         Task DeletePartByGuid(Guid partGuid);
         Task<IEnumerable<PartWithCar>> GetAllPartsWithCars();
-        //PartModel GetPartWithCar(int partId);
     }
 }

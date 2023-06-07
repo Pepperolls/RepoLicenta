@@ -50,6 +50,71 @@ namespace WebApplication.Migrations
                     b.ToTable("Cars");
                 });
 
+            modelBuilder.Entity("WebApplication.Models.OrderItemModel", b =>
+                {
+                    b.Property<Guid>("OrderItemGuid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("FK_OrderGuid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("OrderModelOrderGuid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PartModelGuid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderItemGuid");
+
+                    b.HasIndex("FK_OrderGuid");
+
+                    b.HasIndex("OrderModelOrderGuid");
+
+                    b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("WebApplication.Models.OrderModel", b =>
+                {
+                    b.Property<Guid>("OrderGuid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserCity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserCountry")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserFirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserLastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserPhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserZipCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("OrderGuid");
+
+                    b.ToTable("Orders");
+                });
+
             modelBuilder.Entity("WebApplication.Models.PartModel", b =>
                 {
                     b.Property<Guid>("PartGuid")
@@ -91,6 +156,15 @@ namespace WebApplication.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -112,14 +186,34 @@ namespace WebApplication.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<string>("ZipCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("WebApplication.Models.OrderItemModel", b =>
+                {
+                    b.HasOne("WebApplication.Models.OrderModel", null)
+                        .WithMany()
+                        .HasForeignKey("FK_OrderGuid")
+                        .HasConstraintName("FK_OrderItemModel_OrderModel_OrderGuid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApplication.Models.OrderModel", null)
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderModelOrderGuid");
                 });
 
             modelBuilder.Entity("WebApplication.Models.PartModel", b =>
@@ -130,6 +224,11 @@ namespace WebApplication.Migrations
                         .HasConstraintName("FK_PartModel_CarModel_CarGuid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WebApplication.Models.OrderModel", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
         }

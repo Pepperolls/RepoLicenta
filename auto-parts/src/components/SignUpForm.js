@@ -25,9 +25,9 @@ const mainGridStyle = {
 };
 
 const paperStyle = {
-  padding: 20,
+  padding: '0px 20px 10px 20px',
   height: '100%',
-  width: '27.5%',
+  width: '30%',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -35,7 +35,7 @@ const paperStyle = {
 };
 
 const btnStyle = {
-  margin: '15px 0',
+  margin: '30px 0px 15px 0px',
 };
 
 const schema = yup
@@ -55,6 +55,11 @@ const schema = yup
       .oneOf([yup.ref('password'), null], 'The passwords should match.'),
     firstName: yup.string().required('First name is required.'),
     lastName: yup.string().required('Last name is required.'),
+    country: yup.string().required('Country is required.'),
+    city: yup.string().required('City is required.'),
+    zipCode: yup.string().required('Zip code is required.'),
+    addressLine: yup.string().required('Address is required.'),
+    phoneNumber: yup.string().required('Phone number is required.'),
   })
   .required();
 
@@ -71,6 +76,7 @@ const SignUp = () => {
 
   const submitSignUpForm = async data => {
     try {
+      console.log(data);
       const res = await axios.post(
         process.env.REACT_APP_API_URL + '/CreateUser',
         {
@@ -79,6 +85,11 @@ const SignUp = () => {
           password: data.password,
           firstName: data.firstName,
           lastName: data.lastName,
+          country: data.country,
+          city: data.city,
+          zipCode: data.zipCode,
+          address: data.addressLine,
+          phoneNumber: data.phoneNumber,
         }
       );
 
@@ -98,8 +109,8 @@ const SignUp = () => {
   };
 
   return (
-    <Grid style={mainGridStyle}>
-      <Paper elevation={10} style={paperStyle}>
+    <Grid container style={mainGridStyle}>
+      <Paper elevation={7} style={paperStyle}>
         <img
           src="/images/Logo_blue.png"
           alt="Blue car logo"
@@ -108,13 +119,12 @@ const SignUp = () => {
           style={{ alignSelf: 'center' }}
         />
         <form id="signUpForm" onSubmit={handleSubmit(submitSignUpForm)}>
-          <Grid container spacing={2}>
+          <Grid container spacing={3}>
             <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
               <TextField
                 name="email"
-                margin="normal"
                 variant="outlined"
-                label="Enter e-mail"
+                label="E-mail"
                 fullWidth
                 error={!!errors.email}
                 helperText={errors?.email?.message}
@@ -124,9 +134,8 @@ const SignUp = () => {
             <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
               <TextField
                 name="username"
-                margin="normal"
                 variant="outlined"
-                label="Enter username"
+                label="Username"
                 fullWidth
                 error={!!errors?.username}
                 helperText={errors?.username?.message}
@@ -136,10 +145,9 @@ const SignUp = () => {
             <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
               <TextField
                 name="password"
-                margin="normal"
                 variant="outlined"
                 type="password"
-                label="Enter password"
+                label="Password"
                 fullWidth
                 error={!!errors?.password}
                 helperText={errors?.password?.message}
@@ -149,7 +157,6 @@ const SignUp = () => {
             <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
               <TextField
                 name="confirmPassword"
-                margin="normal"
                 variant="outlined"
                 type="password"
                 label="Confirm password"
@@ -164,9 +171,8 @@ const SignUp = () => {
             <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
               <TextField
                 name="firstName"
-                margin="normal"
                 variant="outlined"
-                label="Enter first name"
+                label="First name"
                 fullWidth
                 error={!!errors?.firstName}
                 helperText={errors?.firstName?.message}
@@ -176,13 +182,67 @@ const SignUp = () => {
             <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
               <TextField
                 name="lastName"
-                margin="normal"
                 variant="outlined"
-                label="Enter last name"
+                label="Last name"
                 fullWidth
                 error={!!errors?.lastName}
                 helperText={errors?.lastName?.message}
                 {...register('lastName')}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+              <TextField
+                name="country"
+                variant="outlined"
+                label="Country"
+                fullWidth
+                error={!!errors?.country}
+                helperText={errors?.country?.message}
+                {...register('country')}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+              <TextField
+                name="city"
+                variant="outlined"
+                label="City"
+                fullWidth
+                error={!!errors?.city}
+                helperText={errors?.city?.message}
+                {...register('city')}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+              <TextField
+                name="zipCode"
+                variant="outlined"
+                label="Zip code"
+                fullWidth
+                error={!!errors?.zipCode}
+                helperText={errors?.zipCode?.message}
+                {...register('zipCode')}
+              />
+            </Grid>
+            <Grid item xs={12} sm={8} md={8} lg={8} xl={8}>
+              <TextField
+                name="addressLine"
+                variant="outlined"
+                label="Address line"
+                fullWidth
+                error={!!errors?.addressLine}
+                helperText={errors?.addressLine?.message}
+                {...register('addressLine')}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+              <TextField
+                name="phoneNumber"
+                variant="outlined"
+                label="Phone number"
+                fullWidth
+                error={!!errors?.phoneNumber}
+                helperText={errors?.phoneNumber?.message}
+                {...register('phoneNumber')}
               />
             </Grid>
           </Grid>
@@ -198,7 +258,7 @@ const SignUp = () => {
         >
           Sign Up
         </Button>
-        <Typography style={{ marginTop: '10px' }}>
+        <Typography>
           Already have an account?{' '}
           <Link href="#" onClick={() => navigate('/LogIn')}>
             Sign In

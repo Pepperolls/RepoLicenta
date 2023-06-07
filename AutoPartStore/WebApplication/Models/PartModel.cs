@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class PartModel // The one in the database
+    public class PartModel
     {
         public Guid PartGuid { get; set; }
         public Guid FK_CarGuid { get; set; }
@@ -14,8 +14,9 @@
 
         public PartModel()
         {
-
+            PartGuid = Guid.NewGuid();
         }
+
         public PartModel(string fk_carGuid, string name, decimal price, string category, string description, string imgUrl)
         {
             PartGuid = Guid.NewGuid();

@@ -54,7 +54,8 @@ namespace WebApplication
 
             services.AddScoped<IUserRepository, UserRepository>()
                 .AddScoped<IPartRepository, PartRepository>()
-                .AddScoped<ICarRepository, CarRepository>();
+                .AddScoped<ICarRepository, CarRepository>()
+                .AddScoped<IOrderRepository, OrderRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

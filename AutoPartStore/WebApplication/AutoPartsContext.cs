@@ -15,12 +15,6 @@ namespace WebApplication
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            /*modelBuilder.Entity<CarModel>()
-                .HasMany(p => p.Parts)
-                .WithOne(c => c.Car)
-                .HasForeignKey(k => k.CarModelId)
-                .OnDelete(DeleteBehavior.Cascade);*/
-
             modelBuilder.Entity<UserModel>().HasKey(u => u.UserId);
             modelBuilder.Entity<UserModel>().Property(u => u.Username).IsRequired().HasMaxLength(20);
             modelBuilder.Entity<UserModel>().Property(u => u.Email).IsRequired();
@@ -38,18 +32,31 @@ namespace WebApplication
 
             modelBuilder.Entity<PartModel>().HasKey(p => p.PartGuid);
             modelBuilder.Entity<PartModel>()
-            .HasOne<CarModel>()
-            .WithMany()
-            .HasForeignKey(p => p.FK_CarGuid)
-            .HasPrincipalKey(c => c.CarGuid)
-            .HasConstraintName("FK_PartModel_CarModel_CarGuid");
+                .HasOne<CarModel>()
+                .WithMany()
+                .HasForeignKey(p => p.FK_CarGuid)
+                .HasPrincipalKey(c => c.CarGuid)
+                .HasConstraintName("FK_PartModel_CarModel_CarGuid");
             modelBuilder.Entity<PartModel>().Property(p => p.Name).IsRequired().HasMaxLength(20);
             modelBuilder.Entity<PartModel>().Property(p => p.Price).IsRequired().HasColumnType("decimal(18,2)");
             modelBuilder.Entity<PartModel>().Property(p => p.Category).IsRequired().HasMaxLength(20);
+
+            modelBuilder.Entity<OrderModel>().HasKey(o => o.OrderGuid);
+            modelBuilder.Entity<OrderModel>().Property(o => o.TotalPrice).IsRequired().HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<OrderItemModel>().HasKey(i => i.OrderItemGuid);
+            modelBuilder.Entity<OrderItemModel>()
+                .HasOne<OrderModel>()
+                .WithMany()
+                .HasForeignKey(i => i.FK_OrderGuid)
+                .HasPrincipalKey(o => o.OrderGuid)
+                .HasConstraintName("FK_OrderItemModel_OrderModel_OrderGuid");
         }
 
         public DbSet<UserModel> Users { get; set; }
         public DbSet<CarModel> Cars { get; set; }
         public DbSet<PartModel> Parts { get; set; }
+        public DbSet<OrderModel> Orders { get; set; }
+        public DbSet<OrderItemModel> OrderItems { get; set; }
     }
 }

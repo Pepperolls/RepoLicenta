@@ -87,8 +87,8 @@ const SignInForm = props => {
   };
 
   return (
-    <Grid style={mainGridStyle}>
-      <Paper elevation={10} style={paperStyle}>
+    <Grid container style={mainGridStyle}>
+      <Paper elevation={7} style={paperStyle}>
         <img
           src="/images/Logo_blue.png"
           alt="Blue car logo"
@@ -98,7 +98,7 @@ const SignInForm = props => {
         />
         <form onSubmit={handleSubmit(submitLoginForm)}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+            <Grid item xs={12}>
               <TextField
                 name="usernameOrEmail"
                 margin="normal"
@@ -110,7 +110,7 @@ const SignInForm = props => {
                 {...register('usernameOrEmail')}
               />
             </Grid>
-            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+            <Grid item xs={12}>
               <TextField
                 margin="normal"
                 variant="outlined"

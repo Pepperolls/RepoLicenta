@@ -6,8 +6,8 @@ import {
   REMOVE_FROM_CART,
   ADD_TO_FAVORITES,
   REMOVE_FROM_FAVORITES,
-  ADD_PRICE_TO_TOTAL,
   CHANGE_QUANTITY,
+  EMPTY_CART,
 } from '../actions/ProductActions';
 import { REHYDRATE } from 'redux-persist';
 
@@ -26,10 +26,10 @@ export default function (state = initialState, action) {
       return {
         ...initialState,
         partsAddedToCart: action.payload
-          ? action.payload.products.partsAddedToCart.map(part => {
+          ? action.payload.products.partsAddedToCart.map(partAddedToCart => {
               return {
-                ...part,
-                quantity: parseInt(part.quantity),
+                ...partAddedToCart,
+                quantity: parseInt(partAddedToCart.quantity),
               };
             })
           : [],
@@ -61,19 +61,53 @@ export default function (state = initialState, action) {
     }
     case ADD_TO_CART: {
       const partId = action.partId;
-      return {
-        ...state,
-        partsAddedToCart: [
-          ...new Set([...state.partsAddedToCart, { partId, quantity: 1 }]),
-        ],
-      };
+      if (
+        state.partsAddedToCart.find(
+          partAddedToCart => partAddedToCart.part.partGuid === partId
+        ) === undefined
+      ) {
+        const partAddedToCart = state.partsWithCars.find(
+          partWithCar => partWithCar.part.partGuid === partId
+        );
+        return {
+          ...state,
+          partsAddedToCart: [
+            ...new Set([
+              ...state.partsAddedToCart,
+              { part: partAddedToCart.part, quantity: 1 },
+            ]),
+          ],
+        };
+      } else {
+        return {
+          ...state,
+        };
+      }
     }
     case REMOVE_FROM_CART: {
       const partId = action.partId;
       return {
         ...state,
         partsAddedToCart: state.partsAddedToCart.filter(
-          p => p.partId !== partId
+          partAddedToCart => partAddedToCart.part.partGuid !== partId
+        ),
+      };
+    }
+    case EMPTY_CART: {
+      return {
+        ...state,
+        partsAddedToCart: [],
+      };
+    }
+    case CHANGE_QUANTITY: {
+      const partId = action.partId;
+      const newQuantity = action.quantity;
+      return {
+        ...state,
+        partsAddedToCart: state.partsAddedToCart.map(partAddedToCart =>
+          partAddedToCart.part.partGuid === partId
+            ? { part: partAddedToCart.part, quantity: newQuantity }
+            : partAddedToCart
         ),
       };
     }
@@ -92,25 +126,6 @@ export default function (state = initialState, action) {
         ...state,
         partsAddedToFavorites: state.partsAddedToFavorites.filter(
           p => p !== partId
-        ),
-      };
-    }
-    case ADD_PRICE_TO_TOTAL: {
-      const id = action.id;
-      const price = state.parts.find(part => part.partModelId === id).price;
-      const newTotal = state.totalSum + price;
-      return {
-        ...state,
-        totalSum: newTotal,
-      };
-    }
-    case CHANGE_QUANTITY: {
-      const id = action.id;
-      const newQuantity = action.quantity;
-      return {
-        ...state,
-        partsAddedToCart: state.partsAddedToCart.map(part =>
-          part.partId === id ? { partId: id, quantity: newQuantity } : part
         ),
       };
     }

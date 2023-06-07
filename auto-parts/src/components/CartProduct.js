@@ -1,39 +1,18 @@
-import styled from 'styled-components';
 import { TextField, Typography, Button } from '@material-ui/core';
 import { useState } from 'react';
 import { red } from '@mui/material/colors';
-import { Paper } from '@mui/material';
+import { Paper, Grid } from '@mui/material';
 
-const Product = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
+const mainDivStyles = {
+  display: 'flex',
+  justifyContent: 'space-bewteen',
+};
 
-const ProductDetail = styled.div`
-  flex: 2;
-  display: flex;
-`;
-
-const Details = styled.div`
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-`;
-
-const PriceDetail = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Hr = styled.hr`
-  background-color: #eee;
-  border: none;
-  height: 1px;
-`;
+const centeredFlex = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+};
 
 const CartProduct = props => {
   const { itemId, title, price, imgSrc } = props;
@@ -49,50 +28,71 @@ const CartProduct = props => {
           '0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 -1px 2px 0 rgba(0, 0, 0, 0.2)',
       }}
     >
-      <Product>
-        <ProductDetail>
-          <img src={imgSrc} width="200px" alt="Product" />
-          <Details>
+      <div style={mainDivStyles}>
+        <Grid container>
+          <Grid item xs={4}>
+            <img
+              src={imgSrc}
+              style={{
+                width: '200px',
+                height: '200px',
+                objectFit: 'contain',
+              }}
+              alt="Product"
+            />
+          </Grid>
+          <Grid item xs={8} style={{ margin: 'auto', paddingLeft: 15 }}>
+            <Grid container>
+              <Grid item xs={12}>
+                <Typography variant="h6">
+                  <b>Product:</b> {title}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="h6">
+                  <b>Price:</b> ${price}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid container style={centeredFlex} padding="25px">
+          <Grid item style={centeredFlex} xs={12}>
+            <TextField
+              id="quantity"
+              label="Quantity"
+              value={quantity}
+              variant="outlined"
+              style={{ width: 100 }}
+              type="number"
+              onChange={event => {
+                const newQuantity = event.target.value;
+                if (newQuantity <= 0) {
+                  event.target.value = 1;
+                } else {
+                  setQuantity(event.target.value);
+                  props.changeQuantity(itemId, newQuantity);
+                }
+              }}
+            />
+          </Grid>
+          <Grid item style={centeredFlex} xs={12}>
             <Typography variant="h6">
-              <b>Product:</b> {title}
+              <b>Total price: ${parseFloat(totalProductPrice).toFixed(2)}</b>
             </Typography>
-            <Typography variant="h6">
-              <b>Product ID:</b> {itemId}
-            </Typography>
-            <Typography variant="h6">
-              <b>Price:</b> ${price}
-            </Typography>
-          </Details>
-        </ProductDetail>
-        <PriceDetail>
-          <TextField
-            id="quantity"
-            margin="normal"
-            variant="outlined"
-            type="input"
-            label="Quantity"
-            value={quantity}
-            style={{ width: 100 }}
-            onChange={event => {
-              const newQuantity = event.target.value;
-              setQuantity(newQuantity);
-              props.changeQuantity(itemId, newQuantity);
-            }}
-          />
-          <Typography variant="h6">
-            <b>Total price: ${parseFloat(totalProductPrice).toFixed(2)}</b>
-          </Typography>
-          <Button
-            variant="contained"
-            style={{ backgroundColor: red[500], color: red[50] }}
-            aria-label="removeFromCart"
-            onClick={() => props.removeFromCart(itemId)}
-          >
-            REMOVE FROM CART
-          </Button>
-        </PriceDetail>
-      </Product>
-      <Hr />
+          </Grid>
+          <Grid item style={centeredFlex} xs={12}>
+            <Button
+              variant="contained"
+              style={{ backgroundColor: red[500], color: red[50] }}
+              aria-label="removeFromCart"
+              onClick={() => props.removeFromCart(itemId)}
+            >
+              REMOVE FROM CART
+            </Button>
+          </Grid>
+        </Grid>
+      </div>
     </Paper>
   );
 };

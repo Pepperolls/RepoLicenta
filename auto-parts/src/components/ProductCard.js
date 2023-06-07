@@ -13,6 +13,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import { Button } from '@material-ui/core';
 import { Box } from '@mui/system';
+import { toast } from 'react-toastify';
+
+toast.configure();
 
 const ExpandMore = styled(props => {
   const { expand, ...other } = props;
@@ -50,6 +53,14 @@ const ProductCard = props => {
     boxShadow:
       '0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 -1px 2px 0 rgba(0, 0, 0, 0.2)',
   };
+
+  function handleAddToCart() {
+    props.addToCart(partId);
+    toast.success('The part was added to your shopping cart.', {
+      position: toast.POSITION.BOTTOM_LEFT,
+      autoClose: 3000,
+    });
+  }
 
   return (
     <Card style={cardStyle}>
@@ -99,7 +110,7 @@ const ProductCard = props => {
             variant="contained"
             color="secondary"
             aria-label="addToCart"
-            onClick={() => props.addToCart(partId)}
+            onClick={handleAddToCart}
           >
             ADD TO CART
           </Button>

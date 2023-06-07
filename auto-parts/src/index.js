@@ -16,7 +16,7 @@ import ProductsPage from './containers/ProductsPage';
 import CartPage from './containers/CartPage';
 import SignUpPage from './containers/SignUpPage';
 import SignInPage from './containers/SignInPage';
-import ToBeContinued from './containers/ToBeContinuedContainer';
+import OrderConfirmationPage from './containers/OrderConfirmationPage';
 
 ReactDOM.render(
   <Provider store={store}>
@@ -40,7 +40,10 @@ ReactDOM.render(
             <Route path="/Cart" element={<CartPage />} />
             <Route path="/SignUp" element={<SignUpPage />} />
             <Route path="/LogIn" element={<SignInPage />} />
-            <Route path="/ToBeContinued" element={<ToBeContinued />} />
+            <Route
+              path="/OrderConfirmationPage"
+              element={<OrderConfirmationPage />}
+            />
           </Routes>
           <Footer />
         </div>

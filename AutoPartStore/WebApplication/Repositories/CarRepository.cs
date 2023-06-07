@@ -50,6 +50,7 @@ namespace WebApplication.Repositories
         {
             return await _dbContext.Cars.ToListAsync();
         }
+
         public async Task<CarModel> GetCarByGuid(Guid carGuid)
         {
             var car = await _dbContext.Cars.FirstOrDefaultAsync(c => c.CarGuid == carGuid);

@@ -1,7 +1,7 @@
 import { AppBar } from '@material-ui/core';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@material-ui/core/Button';
-import ListItemIcon from '@mui/material/ListItemIcon';
+import { ListItemText, ListItemIcon } from '@mui/material';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { red } from '@mui/material/colors';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -15,9 +15,18 @@ const AppHeader = props => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const listItemIconStyle = {
+    minWidth: '40px',
+  };
+
   const iconStyle = {
     fontSize: 30,
     color: red[50],
+  };
+
+  const buttonStyle = {
+    color: 'inherit',
+    paddingRight: 25,
   };
 
   const pathNames = [
@@ -34,10 +43,11 @@ const AppHeader = props => {
           <AppHeaderLeftButtons></AppHeaderLeftButtons>
         </div>
 
-        <Button onClick={() => navigate('/Cart')}>
-          <ListItemIcon minwidth="40px">
+        <Button onClick={() => navigate('/Cart')} style={buttonStyle}>
+          <ListItemIcon style={listItemIconStyle}>
             <ShoppingCartOutlinedIcon style={iconStyle} />
           </ListItemIcon>
+          <ListItemText primary="Shopping cart" />
         </Button>
 
         {props.loggedInUser === null ? (
