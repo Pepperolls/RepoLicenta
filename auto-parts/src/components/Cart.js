@@ -1,52 +1,83 @@
-import styled from 'styled-components';
 import Button from '@mui/material/Button';
 import { Typography, Grid } from '@material-ui/core';
-import { Box } from '@mui/system';
-import { red, lightGreen } from '@mui/material/colors';
+import { lightGreen } from '@mui/material/colors';
 import CartProduct from './CartProduct';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Paper } from '@mui/material';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as productActions from '../redux/actions/ProductActions';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
-const Info = styled.div`
-  flex: 3;
-`;
-const Summary = styled.div`
-  flex: 1;
-  border: 0.5px solid lightgray;
-  border-radius: 10px;
-  padding: 20px;
-  height: 50vh;
-`;
+toast.configure();
 
-const SummaryItem = styled.div`
-  margin: 30px 0px;
-  display: flex;
-  justify-content: space-between;
-  font-weight: ${props => props.type === 'total' && '500'};
-  font-size: ${props => props.type === 'total' && '24px'};
-`;
+const summaryGridContainerStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: 20,
+};
 
 const Cart = props => {
+  console.log(props);
   const navigate = useNavigate();
+  const {
+    partsAddedToCart = [],
+    isLoadingParts = false,
+    loggedInUser = null,
+  } = props;
 
-  const { partsWithCars = [], isLoadingParts = false } = props;
+  const partsAddedToCartDTO = partsAddedToCart.map(({ part, quantity }) => ({
+    partModelGuid: part.partGuid,
+    quantity,
+  }));
 
-  const partsWithCarsAddedToCart = partsWithCars.filter(
-    partWithCar => partWithCar.isAddedToCart
-  );
-
-  const totalSum = partsWithCarsAddedToCart.reduce(
-    (acc, partWithCarAddedToCart) => {
-      acc +=
-        partWithCarAddedToCart.quantity * partWithCarAddedToCart.part.price;
-      return acc;
-    },
-    0
-  );
+  const totalSum = partsAddedToCart.reduce((sum, partAddedToCart) => {
+    sum += partAddedToCart.quantity * partAddedToCart.part.price;
+    return sum;
+  }, 0);
 
   useEffect(() => {
     props.fetchParts();
   }, []);
+
+  async function handleCheckoutNow() {
+    navigate('/OrderConfirmationPage');
+    if (partsAddedToCartDTO.length > 0) {
+      if (loggedInUser) {
+        await axios.post(process.env.REACT_APP_API_URL + '/CreateOrder', {
+          orderItems: partsAddedToCartDTO,
+          totalPrice: totalSum,
+          userFirstName: loggedInUser.firstName,
+          userLastName: loggedInUser.lastName,
+          userEmail: loggedInUser.email,
+          userCountry: loggedInUser.country,
+          userCity: loggedInUser.city,
+          userZipCode: loggedInUser.zipCode,
+          userAddress: loggedInUser.address,
+          userPhoneNumber: loggedInUser.phoneNumber,
+        });
+        toast.success('Order placed successfully!', {
+          position: toast.POSITION.BOTTOM_LEFT,
+          autoClose: 6000,
+        });
+        props.emptyCart();
+        navigate('/OrderConfirmationPage');
+      } else {
+        toast.error('You must be logged in before placing an order.', {
+          position: toast.POSITION.BOTTOM_LEFT,
+          autoClose: 6000,
+        });
+      }
+    } else {
+      toast.error('You can not place an empty order.', {
+        position: toast.POSITION.BOTTOM_LEFT,
+        autoClose: 6000,
+      });
+    }
+  }
 
   if (isLoadingParts)
     return (
@@ -56,76 +87,109 @@ const Cart = props => {
     );
 
   return (
-    <Box style={{ padding: '20px' }}>
-      <Box sx={{ bgcolor: '#002984', maxWidth: 230, margin: 'auto' }}>
-        <Typography align="center" variant="h4" style={{ color: red[50] }}>
-          YOUR CART
-        </Typography>
-      </Box>
-      <Box style={{ display: 'flex' }}>
-        <Info>
-          {partsWithCarsAddedToCart.map((partWithCarAddedToCart, index) => {
-            return (
-              <CartProduct
-                key={index}
-                itemId={partWithCarAddedToCart.part.partGuid}
-                title={partWithCarAddedToCart.part.name}
-                price={partWithCarAddedToCart.part.price}
-                imgSrc={partWithCarAddedToCart.part.imgUrl}
-                isAddedToCart={partWithCarAddedToCart.isAddedToCart}
-                quantity={partWithCarAddedToCart.quantity}
-                totalSum={props.totalSum}
-                addToTotalSum={props.addToTotalSum}
-                changeQuantity={props.changeQuantity}
-                removeFromCart={props.removeFromCart}
-                description="This is where part's CAR details will go"
-              />
-            );
-          })}
-        </Info>
+    <div style={{ padding: '50px' }}>
+      <Grid container spacing={3}>
+        <Grid item xs={9}>
+          <Grid container spacing={3}>
+            {partsAddedToCart.map((partAddedToCart, index) => {
+              return (
+                <Grid item xs={12} key={index}>
+                  <CartProduct
+                    itemId={partAddedToCart.part.partGuid}
+                    title={partAddedToCart.part.name}
+                    price={partAddedToCart.part.price}
+                    imgSrc={partAddedToCart.part.imgUrl}
+                    isAddedToCart={partAddedToCart.isAddedToCart}
+                    quantity={partAddedToCart.quantity}
+                    totalSum={props.totalSum}
+                    addToTotalSum={props.addToTotalSum}
+                    changeQuantity={props.changeQuantity}
+                    removeFromCart={props.removeFromCart}
+                  />
+                </Grid>
+              );
+            })}
+          </Grid>
+        </Grid>
 
-        <Summary>
-          <Typography variant="h4">ORDER SUMMARY</Typography>
-          <SummaryItem>
-            <Typography>Subtotal</Typography>
-            <Typography>${parseFloat(totalSum).toFixed(2)}</Typography>
-          </SummaryItem>
-          <SummaryItem>
-            <Typography>Estimated Shipping</Typography>
-            <Typography>$ 5.90</Typography>
-          </SummaryItem>
-          <SummaryItem>
-            <Typography>Shipping Discount</Typography>
-            <Typography>$ -5.90</Typography>
-          </SummaryItem>
-          <SummaryItem type="total">
-            <Typography variant="h5">
-              <b>Total: </b>
-            </Typography>
-            <Typography variant="h5">
-              <b>${parseFloat(totalSum).toFixed(2)} </b>
-            </Typography>
-          </SummaryItem>
-          <Button
-            variant="contained"
-            color="primary"
-            size="medium"
-            onClick={() => navigate('/Products')}
+        <Grid item xs={3}>
+          <Paper
+            style={{
+              padding: 15,
+              boxShadow:
+                '0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 -1px 2px 0 rgba(0, 0, 0, 0.2)',
+            }}
           >
-            CONTINUE SHOPPING
-          </Button>
-          <Button
-            variant="contained"
-            size="medium"
-            style={{ backgroundColor: lightGreen[700], marginLeft: '17px' }}
-            onClick={() => navigate('/ToBeContinued')}
-          >
-            CHECKOUT NOW
-          </Button>
-        </Summary>
-      </Box>
-    </Box>
+            <Grid container spacing={4} style={summaryGridContainerStyle}>
+              <Typography variant="h4">ORDER SUMMARY</Typography>
+              <Grid
+                item
+                xs={12}
+                style={{ display: 'flex', justifyContent: 'space-between' }}
+              >
+                <Typography>Subtotal</Typography>
+                <Typography>${parseFloat(totalSum).toFixed(2)}</Typography>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                style={{ display: 'flex', justifyContent: 'space-between' }}
+              >
+                <Typography>Estimated Shipping</Typography>
+                <Typography>$ 5.90</Typography>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                style={{ display: 'flex', justifyContent: 'space-between' }}
+              >
+                <Typography>Shipping Discount</Typography>
+                <Typography>$ -5.90</Typography>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                style={{ display: 'flex', justifyContent: 'space-between' }}
+                type="total"
+              >
+                <Typography variant="h5">
+                  <b>Total: </b>
+                </Typography>
+                <Typography variant="h5">
+                  <b>${parseFloat(totalSum).toFixed(2)} </b>
+                </Typography>
+              </Grid>
+              <Button
+                variant="contained"
+                style={{
+                  backgroundColor: lightGreen[700],
+                }}
+                onClick={handleCheckoutNow}
+              >
+                Checkout now
+              </Button>
+            </Grid>
+          </Paper>
+        </Grid>
+      </Grid>
+    </div>
   );
 };
 
-export default Cart;
+function mapStateToProps(state) {
+  const {
+    products: { partsAddedToCart, totalSum },
+    users: { loggedInUser },
+  } = state;
+  return {
+    partsAddedToCart,
+    totalSum,
+    loggedInUser,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return { ...bindActionCreators(productActions, dispatch) };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);

@@ -18,13 +18,16 @@ const HeaderListItem = styled.li`
   display: inline;
   margin-right: 10px;
 `;
+
 const listItemIconStyle = {
   minWidth: '40px',
 };
+
 const iconStyle = {
   fontSize: 30,
   color: red[50],
 };
+
 const buttonStyle = {
   color: 'inherit',
 };

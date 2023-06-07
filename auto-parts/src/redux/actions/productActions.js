@@ -5,9 +5,9 @@ export const FETCH_PRODUCTS_SUCCESS = 'FETCH_PRODUCTS_SUCCESS';
 export const FETCH_PRODUCTS_FAIL = 'FETCH_PRODUCTS_FAIL';
 export const ADD_TO_CART = 'ADD_TO_CART';
 export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
+export const EMPTY_CART = 'EMPTY_CART';
 export const ADD_TO_FAVORITES = 'ADD_TO_FAVORITES';
 export const REMOVE_FROM_FAVORITES = 'REMOVE_FROM_FAVORITES';
-export const ADD_PRICE_TO_TOTAL = 'ADD_PRICE_TO_TOTAL';
 export const CHANGE_QUANTITY = 'CHANGE_QUANTITY';
 
 export const fetchParts = () => {
@@ -33,6 +33,12 @@ export const removeFromCart = partId => {
   };
 };
 
+export const emptyCart = () => {
+  return (dispatch, getState) => {
+    dispatch({ type: EMPTY_CART });
+  };
+};
+
 export const addToFavorites = partId => {
   return (dispatch, getState) => {
     dispatch({ type: ADD_TO_FAVORITES, partId });
@@ -45,14 +51,8 @@ export const removeFromFavorites = partId => {
   };
 };
 
-export const addToTotalSum = id => {
+export const changeQuantity = (partId, quantity) => {
   return (dispatch, getState) => {
-    dispatch({ type: ADD_PRICE_TO_TOTAL, id });
-  };
-};
-
-export const changeQuantity = (id, quantity) => {
-  return (dispatch, getState) => {
-    dispatch({ type: CHANGE_QUANTITY, id, quantity });
+    dispatch({ type: CHANGE_QUANTITY, partId, quantity });
   };
 };
