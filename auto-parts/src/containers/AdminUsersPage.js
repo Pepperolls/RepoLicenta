@@ -12,7 +12,7 @@ const AdminUsersPage = () => {
   };
 
   return (
-    <Grid container style={{ padding: 25 }} spacing={4}>
+    <Grid container style={{ padding: 25 }}>
       <Grid item xs={12} style={centeredDiv}>
         <h3>This is the users control page</h3>
       </Grid>

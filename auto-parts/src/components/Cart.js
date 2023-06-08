@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { Paper } from '@mui/material';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as productActions from '../redux/actions/ProductActions';
+import * as productActions from '../redux/actions/productActions';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 

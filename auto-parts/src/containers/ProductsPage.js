@@ -1,7 +1,7 @@
 import ProductCardsContainer from './ProductCardsContainer';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as productActions from '../redux/actions/ProductActions';
+import * as productActions from '../redux/actions/productActions';
 
 const ProductsPage = props => {
   return (

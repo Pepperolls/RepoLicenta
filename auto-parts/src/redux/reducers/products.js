@@ -8,7 +8,7 @@ import {
   REMOVE_FROM_FAVORITES,
   CHANGE_QUANTITY,
   EMPTY_CART,
-} from '../actions/ProductActions';
+} from '../actions/productActions';
 import { REHYDRATE } from 'redux-persist';
 
 const initialState = {

@@ -1,4 +1,4 @@
-import { LOGIN_USER, LOGOUT_USER } from '../actions/UserActions';
+import { LOGIN_USER, LOGOUT_USER, UPDATE_USER } from '../actions/UserActions';
 
 const initialState = {
   loggedInUser: null,
@@ -19,6 +19,14 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loggedInUser: null,
+      };
+    }
+
+    case UPDATE_USER: {
+      const userModel = action.userModel;
+      return {
+        ...state,
+        loggedInUser: userModel,
       };
     }
 

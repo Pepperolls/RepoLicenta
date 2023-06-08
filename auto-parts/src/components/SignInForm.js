@@ -16,6 +16,8 @@ import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as userActions from '../redux/actions/UserActions';
+import { useState } from 'react';
+import TwoFactorAuthentication from './TwoFactorAuthentication';
 
 toast.configure();
 
@@ -59,6 +61,9 @@ const SignInForm = props => {
     resolver: yupResolver(schema),
   });
 
+  const [display2FA, setDisplay2FA] = useState(false);
+  const [userToLogin, setUserToLogin] = useState({});
+
   const submitLoginForm = async data => {
     try {
       const res = await axios.post(
@@ -67,15 +72,20 @@ const SignInForm = props => {
       );
 
       if (res) {
-        props.loginUser(res.data);
-        toast.success('Logged in successfully!', {
-          position: toast.POSITION.BOTTOM_LEFT,
-          autoClose: 6000,
-        });
-        if (res.data?.isAdmin) {
-          navigate('/AdminHomePage');
+        if (!res.data.isTwoFactorAuthenticationEnabled) {
+          props.loginUser(res.data);
+          toast.success('Logged in successfully!', {
+            position: toast.POSITION.BOTTOM_LEFT,
+            autoClose: 6000,
+          });
+          if (res.data?.isAdmin) {
+            navigate('/AdminHomePage');
+          } else {
+            navigate('/Products');
+          }
         } else {
-          navigate('/Products');
+          setUserToLogin(res.data);
+          setDisplay2FA(true);
         }
       }
     } catch (error) {
@@ -86,7 +96,7 @@ const SignInForm = props => {
     }
   };
 
-  return (
+  return display2FA === false ? (
     <Grid container style={mainGridStyle}>
       <Paper elevation={7} style={paperStyle}>
         <img
@@ -147,6 +157,11 @@ const SignInForm = props => {
         </Typography>
       </Paper>
     </Grid>
+  ) : (
+    <TwoFactorAuthentication
+      userToLogin={userToLogin}
+      loginUser={props.loginUser}
+    ></TwoFactorAuthentication>
   );
 };
 
