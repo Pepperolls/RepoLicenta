@@ -38,6 +38,7 @@ namespace WebApplication.Repositories
             userToModify.LastName = user.LastName;
             userToModify.Password = user.Password;
             userToModify.IsAdmin = user.IsAdmin;
+            userToModify.IsTwoFactorAuthenticationEnabled = user.IsTwoFactorAuthenticationEnabled;
 
             _dbContext.Users.Update(userToModify);
 

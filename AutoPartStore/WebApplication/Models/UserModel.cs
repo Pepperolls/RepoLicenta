@@ -19,6 +19,7 @@ namespace WebApplication.Models
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
         public bool IsAdmin { get; set; }
+        public bool IsTwoFactorAuthenticationEnabled { get; set; }
 
         public UserModel()
         {
@@ -39,6 +40,7 @@ namespace WebApplication.Models
             Address = address;
             PhoneNumber = phoneNumber;
             IsAdmin = false;
+            IsTwoFactorAuthenticationEnabled = false;
         }
     }
 }

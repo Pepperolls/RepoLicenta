@@ -24,7 +24,7 @@ const mainGridStyle = {
 
 const paperStyle = {
   padding: 20,
-  width: '70%',
+  width: '85%',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -59,6 +59,11 @@ const schema = yup
       .oneOf([yup.ref('password'), null], 'The passwords should match.'),
     firstName: yup.string().required('First name is required.'),
     lastName: yup.string().required('Last name is required.'),
+    country: yup.string().required('Country is required.'),
+    city: yup.string().required('City is required.'),
+    zipCode: yup.string().required('Zip code is required.'),
+    addressLine: yup.string().required('Address is required.'),
+    phoneNumber: yup.string().required('Phone number is required.'),
   })
   .required();
 
@@ -72,7 +77,8 @@ const UpdateUserForm = () => {
     resolver: yupResolver(schema),
   });
 
-  const [isSwitchChecked, setIsSwitchChecked] = useState(false);
+  const [isAdminSwitchChecked, setIsAdminSwitchChecked] = useState(false);
+  const [is2FASwitchChecked, setIs2FASwitchChecked] = useState(false);
 
   const submitUpdateUserForm = async data => {
     try {
@@ -84,7 +90,13 @@ const UpdateUserForm = () => {
           password: data.password,
           firstName: data.firstName,
           lastName: data.lastName,
-          isAdmin: isSwitchChecked,
+          country: data.country,
+          city: data.city,
+          zipCode: data.zipCode,
+          address: data.addressLine,
+          phoneNumber: data.phoneNumber,
+          isAdmin: isAdminSwitchChecked,
+          isTwoFactorAuthenticationEnabled: is2FASwitchChecked,
         }
       );
       if (res) {
@@ -93,6 +105,8 @@ const UpdateUserForm = () => {
           autoClose: 6000,
         });
         reset();
+        setIsAdminSwitchChecked(false);
+        setIs2FASwitchChecked(false);
       }
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -196,16 +210,87 @@ const UpdateUserForm = () => {
                 {...register('lastName')}
               />
             </Grid>
-            <Grid item xs={12} style={mainGridStyle}>
+            <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+              <TextField
+                name="country"
+                variant="outlined"
+                label="Country"
+                fullWidth
+                error={!!errors?.country}
+                helperText={errors?.country?.message}
+                {...register('country')}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+              <TextField
+                name="city"
+                variant="outlined"
+                label="City"
+                fullWidth
+                error={!!errors?.city}
+                helperText={errors?.city?.message}
+                {...register('city')}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+              <TextField
+                name="zipCode"
+                variant="outlined"
+                label="Zip code"
+                fullWidth
+                error={!!errors?.zipCode}
+                helperText={errors?.zipCode?.message}
+                {...register('zipCode')}
+              />
+            </Grid>
+            <Grid item xs={12} sm={8} md={8} lg={8} xl={8}>
+              <TextField
+                name="addressLine"
+                variant="outlined"
+                label="Address line"
+                fullWidth
+                error={!!errors?.addressLine}
+                helperText={errors?.addressLine?.message}
+                {...register('addressLine')}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+              <TextField
+                name="phoneNumber"
+                variant="outlined"
+                label="Phone number"
+                fullWidth
+                error={!!errors?.phoneNumber}
+                helperText={errors?.phoneNumber?.message}
+                {...register('phoneNumber')}
+              />
+            </Grid>
+            <Grid item xs={6}>
               <FormControlLabel
                 control={
                   <Switch
-                    checked={isSwitchChecked}
+                    checked={isAdminSwitchChecked}
                     color="primary"
-                    onChange={event => setIsSwitchChecked(event.target.checked)}
+                    onChange={event =>
+                      setIsAdminSwitchChecked(event.target.checked)
+                    }
                   />
                 }
                 label="Is admin"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={is2FASwitchChecked}
+                    color="primary"
+                    onChange={event =>
+                      setIs2FASwitchChecked(event.target.checked)
+                    }
+                  />
+                }
+                label="Is 2FA enabled"
               />
             </Grid>
           </Grid>

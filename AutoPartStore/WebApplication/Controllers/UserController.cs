@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Google.Authenticator;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication.Models;
 using WebApplication.Repositories;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace WebApplication.Controllers
 {
@@ -93,6 +96,41 @@ namespace WebApplication.Controllers
             }
 
             return Ok(user);
+        }
+
+        [HttpGet("/EnableTwoFactorAuthentication/{userEmail}")]
+        public async Task<ActionResult<TwoFactorAuthenticationModel>> EnableTwoFactorAuthentication(string userEmail)
+        {
+            string key = $"VerySecretKey0812{userEmail}";
+
+            TwoFactorAuthenticator tfa = new TwoFactorAuthenticator();
+            SetupCode setupInfo = tfa.GenerateSetupCode("CarLounge", userEmail, key, false, 3);
+
+            string qrCodeImageUrl = setupInfo.QrCodeSetupImageUrl;
+            string manualEntrySetupCode = setupInfo.ManualEntryKey;
+
+            var twoFactorSettings = new TwoFactorAuthenticationModel { qrCode = qrCodeImageUrl, manualCode = manualEntrySetupCode };
+
+            var user = await _userRepository.GetUserByEmail(userEmail);
+            user.IsTwoFactorAuthenticationEnabled = true;
+            await _userRepository.UpdateUser(user.UserId, user);
+
+            return await Task.FromResult<ActionResult<TwoFactorAuthenticationModel>>(twoFactorSettings);
+        }
+
+        [HttpPost("/CheckTwoFactorAuthentication/{twoFactorCode}/{userEmail}")]
+        public ActionResult CheckTwoFactorAuthentication(string twoFactorCode, string userEmail)
+        {
+            string key = $"VerySecretKey0812{userEmail}";
+            TwoFactorAuthenticator tfa = new TwoFactorAuthenticator();
+            bool result = tfa.ValidateTwoFactorPIN(key, twoFactorCode);
+
+            if (result == false)
+            {
+                return BadRequest(new { message = "No user has been found with the given credentials." });
+            }
+
+            return Ok();
         }
 
         private bool isValidEmail(string email)

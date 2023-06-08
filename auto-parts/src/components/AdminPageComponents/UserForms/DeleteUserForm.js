@@ -16,7 +16,7 @@ const mainGridStyle = {
 
 const paperStyle = {
   padding: 20,
-  width: '70%',
+  width: '85%',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -76,7 +76,7 @@ const DeleteUserForm = () => {
         <h2>Delete an existing user</h2>
         <form
           id="deleteUserForm"
-          style={{ minWidth: '410px' }}
+          style={{ minWidth: '530px' }}
           onSubmit={handleSubmit(submitDeleteUserForm)}
         >
           <TextField

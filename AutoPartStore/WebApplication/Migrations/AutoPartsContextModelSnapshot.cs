@@ -177,6 +177,9 @@ namespace WebApplication.Migrations
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsTwoFactorAuthenticationEnabled")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(50)
