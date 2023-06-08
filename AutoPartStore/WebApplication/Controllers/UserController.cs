@@ -127,7 +127,7 @@ namespace WebApplication.Controllers
 
             if (result == false)
             {
-                return BadRequest(new { message = "No user has been found with the given credentials." });
+                return BadRequest(new { message = "The code you have entered is incorrect." });
             }
 
             return Ok();
