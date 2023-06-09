@@ -22,10 +22,10 @@ public class MailAPIController : ControllerBase
         return await _apiMailService.SendEmailAsync(mailData);
     }
 
-    [HttpPost("/SendHTMLEmailAsync")]
-    public async Task<bool> SendHTMLEmailAsync([FromBody] OrderModel orderModel)
+    [HttpPost("/SendOrderEmailAsync")]
+    public async Task<bool> SendOrderEmailAsync([FromBody] OrderModel orderModel)
     {
-        return await _apiMailService.SendHTMLEmailAsync(orderModel);
+        return await _apiMailService.SendOrderEmailAsync(orderModel);
     }
 
 }

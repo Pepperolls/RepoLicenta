@@ -49,16 +49,13 @@ public class APIMailService : IAPIMailService
         return false;
     }
 
-    public async Task<bool> SendHTMLEmailAsync(OrderModel orderModel)
+    public async Task<bool> SendOrderEmailAsync(OrderModel orderModel)
     {
         string filePath = Directory.GetCurrentDirectory() + "\\Services\\EmailService\\Templates\\EmailTemplate.html";
 
         string htmlBody = File.ReadAllText(filePath);
 
         string orderShippingAddress = $"{orderModel.UserAddress}, {orderModel.UserCity}, {orderModel.UserZipCode}, {orderModel.UserCountry}";
-        string logoPath = Directory.GetCurrentDirectory() + "\\Services\\EmailService\\Templates\\Images\\Logo_blue.png";
-        byte[] imageBytes = File.ReadAllBytes(logoPath);
-        string base64Image = Convert.ToBase64String(imageBytes);
 
         string populatedHtml = htmlBody.Replace("{OrderDate}", DateTime.Now.ToString())
                                    .Replace("{CustomerName}", $"{orderModel.UserFirstName} {orderModel.UserLastName}")

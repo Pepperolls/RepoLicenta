@@ -68,7 +68,7 @@ const Cart = props => {
             });
             navigate('/OrderConfirmationPage');
             await axios.post(
-              process.env.REACT_APP_API_URL + '/SendHTMLEmailAsync',
+              process.env.REACT_APP_API_URL + '/SendOrderEmailAsync',
               {
                 orderItems: partsAddedToCartDTO,
                 totalPrice: totalSum,

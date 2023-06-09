@@ -13,7 +13,6 @@ import {
   FormControlLabel,
 } from '@material-ui/core';
 import { useState } from 'react';
-import { Typography } from '@mui/material';
 
 toast.configure();
 

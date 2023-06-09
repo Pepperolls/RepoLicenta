@@ -18,7 +18,7 @@ import * as userActions from '../../redux/actions/UserActions';
 import axios from 'axios';
 import { useState } from 'react';
 import { DialogContent } from '@mui/material';
-import { lightGreen, red } from '@mui/material/colors';
+import { red } from '@mui/material/colors';
 import { toast } from 'react-toastify';
 
 toast.configure();
@@ -29,7 +29,6 @@ const AppHeader = props => {
 
   const [open, setOpen] = useState(false);
   const [twoFactorSetup, setTwoFactorSetup] = useState({});
-  const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
 
   const listItemIconStyle = {
     minWidth: '40px',
@@ -206,6 +205,7 @@ const AppHeader = props => {
                       <img
                         src={twoFactorSetup.qrCode}
                         style={{ height: 300, width: 300 }}
+                        alt="QR Code"
                       />
                     </div>
                     <Typography style={{ textAlign: 'center' }}>

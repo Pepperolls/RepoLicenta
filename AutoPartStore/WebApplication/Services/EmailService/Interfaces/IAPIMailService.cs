@@ -7,6 +7,6 @@ namespace WebApplication.Services.EmailService.Interfaces
     public interface IAPIMailService
     {
         Task<bool> SendEmailAsync(MailData mailData);
-        Task<bool> SendHTMLEmailAsync(OrderModel orderModel);
+        Task<bool> SendOrderEmailAsync(OrderModel orderModel);
     }
 }
