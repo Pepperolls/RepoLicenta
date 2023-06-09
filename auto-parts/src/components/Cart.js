@@ -21,7 +21,6 @@ const summaryGridContainerStyle = {
 };
 
 const Cart = props => {
-  console.log(props);
   const navigate = useNavigate();
   const {
     partsAddedToCart = [],
@@ -44,35 +43,62 @@ const Cart = props => {
   }, []);
 
   async function handleCheckoutNow() {
-    navigate('/OrderConfirmationPage');
-    if (partsAddedToCartDTO.length > 0) {
-      if (loggedInUser) {
-        await axios.post(process.env.REACT_APP_API_URL + '/CreateOrder', {
-          orderItems: partsAddedToCartDTO,
-          totalPrice: totalSum,
-          userFirstName: loggedInUser.firstName,
-          userLastName: loggedInUser.lastName,
-          userEmail: loggedInUser.email,
-          userCountry: loggedInUser.country,
-          userCity: loggedInUser.city,
-          userZipCode: loggedInUser.zipCode,
-          userAddress: loggedInUser.address,
-          userPhoneNumber: loggedInUser.phoneNumber,
-        });
-        toast.success('Order placed successfully!', {
-          position: toast.POSITION.BOTTOM_LEFT,
-          autoClose: 6000,
-        });
-        props.emptyCart();
-        navigate('/OrderConfirmationPage');
+    try {
+      if (partsAddedToCartDTO.length > 0) {
+        if (loggedInUser) {
+          const res = await axios.post(
+            process.env.REACT_APP_API_URL + '/CreateOrder',
+            {
+              orderItems: partsAddedToCartDTO,
+              totalPrice: totalSum,
+              userFirstName: loggedInUser.firstName,
+              userLastName: loggedInUser.lastName,
+              userEmail: loggedInUser.email,
+              userCountry: loggedInUser.country,
+              userCity: loggedInUser.city,
+              userZipCode: loggedInUser.zipCode,
+              userAddress: loggedInUser.address,
+              userPhoneNumber: loggedInUser.phoneNumber,
+            }
+          );
+          if (res) {
+            toast.success('Order placed successfully!', {
+              position: toast.POSITION.BOTTOM_LEFT,
+              autoClose: 6000,
+            });
+            navigate('/OrderConfirmationPage');
+            await axios.post(
+              process.env.REACT_APP_API_URL + '/SendHTMLEmailAsync',
+              {
+                orderItems: partsAddedToCartDTO,
+                totalPrice: totalSum,
+                userFirstName: loggedInUser.firstName,
+                userLastName: loggedInUser.lastName,
+                userEmail: loggedInUser.email,
+                userCountry: loggedInUser.country,
+                userCity: loggedInUser.city,
+                userZipCode: loggedInUser.zipCode,
+                userAddress: loggedInUser.address,
+                userPhoneNumber: loggedInUser.phoneNumber,
+              }
+            );
+            props.emptyCart();
+            navigate('/OrderConfirmationPage');
+          }
+        } else {
+          toast.error('You must be logged in before placing an order.', {
+            position: toast.POSITION.BOTTOM_LEFT,
+            autoClose: 6000,
+          });
+        }
       } else {
-        toast.error('You must be logged in before placing an order.', {
+        toast.error('You can not place an empty order.', {
           position: toast.POSITION.BOTTOM_LEFT,
           autoClose: 6000,
         });
       }
-    } else {
-      toast.error('You can not place an empty order.', {
+    } catch (error) {
+      toast.error(error.response.data.message, {
         position: toast.POSITION.BOTTOM_LEFT,
         autoClose: 6000,
       });

@@ -1,18 +1,16 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using WebApplication.Repositories;
+using WebApplication.Services.EmailService;
+using WebApplication.Services.EmailService.Interfaces;
+using WebApplication.Services.EmailService.Models;
 
 namespace WebApplication
 {
@@ -56,6 +54,17 @@ namespace WebApplication
                 .AddScoped<IPartRepository, PartRepository>()
                 .AddScoped<ICarRepository, CarRepository>()
                 .AddScoped<IOrderRepository, OrderRepository>();
+
+
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.AddTransient<IAPIMailService, APIMailService>();
+            services.AddHttpClient("MailTrapApiClient", (services, client) =>
+            {
+                var mailSettings = services.GetRequiredService<IOptions<MailSettings>>().Value;
+                client.BaseAddress = new Uri(mailSettings.ApiBaseUrl); 
+                client.DefaultRequestHeaders.Add("Api-Token", mailSettings.ApiToken);
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -76,7 +76,6 @@ const SignUp = () => {
 
   const submitSignUpForm = async data => {
     try {
-      console.log(data);
       const res = await axios.post(
         process.env.REACT_APP_API_URL + '/CreateUser',
         {
