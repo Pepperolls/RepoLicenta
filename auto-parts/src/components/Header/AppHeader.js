@@ -77,6 +77,11 @@ const AppHeader = props => {
     setAnchorEl(null);
   };
 
+  const handleUpdateAccount = () => {
+    navigate('/UpdateUserAccount');
+    handleClose();
+  };
+
   const handleLogout = () => {
     props.logoutUser();
     handleClose();
@@ -306,6 +311,17 @@ const AppHeader = props => {
                   </MenuItem>
                 </>
               )}
+              <MenuItem style={centeredFlex}>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  size="large"
+                  fullWidth
+                  onClick={handleUpdateAccount}
+                >
+                  Update account
+                </Button>
+              </MenuItem>
               <MenuItem style={centeredFlex}>
                 <Button
                   variant="contained"

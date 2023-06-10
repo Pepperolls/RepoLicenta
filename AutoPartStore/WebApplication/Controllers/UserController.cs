@@ -43,6 +43,14 @@ namespace WebApplication.Controllers
         {
             var response = await _userRepository.UpdateUser(userToModifyGuid, userModel);
 
+            var userByUsername = await _userRepository.GetUserByUsername(userModel.Username);
+            var userByEmail = await _userRepository.GetUserByEmail(userModel.Email);
+
+            if (userByUsername != null && userByUsername.UserId != userToModifyGuid || userByEmail != null && userByEmail.UserId != userToModifyGuid)
+            {
+                return BadRequest(new { message = "E-mail or username already in use!" });
+            }
+
             if (response == null)
             {
                 return NotFound(new { message = "There is no user with the given Guid!" });
