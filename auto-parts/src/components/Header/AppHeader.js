@@ -65,7 +65,7 @@ const AppHeader = props => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [open, setOpen] = useState(false);
+  const [open2FADialog, setOpen2FADialog] = useState(false);
   const [twoFactorSetup, setTwoFactorSetup] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -93,7 +93,7 @@ const AppHeader = props => {
 
   async function handleShow2faConfig() {
     getTwoFactorSetup();
-    setOpen(true);
+    setOpen2FADialog(true);
   }
 
   async function handleTwoFactorEnabled() {
@@ -124,7 +124,7 @@ const AppHeader = props => {
         autoClose: 6000,
       });
     }
-    setOpen(false);
+    setOpen2FADialog(false);
   }
 
   async function handleTwoFactorDisabling() {
@@ -233,8 +233,8 @@ const AppHeader = props => {
                       Enable 2FA
                     </Button>
                     <Dialog
-                      open={open}
-                      onClose={() => setOpen(false)}
+                      open={open2FADialog}
+                      onClose={() => setOpen2FADialog(false)}
                       PaperProps={{
                         style: {
                           maxHeight: '100%',
@@ -262,7 +262,7 @@ const AppHeader = props => {
                         <Grid container>
                           <Grid item style={centeredFlex} xs={6}>
                             <Button
-                              onClick={() => setOpen(false)}
+                              onClick={() => setOpen2FADialog(false)}
                               variant="contained"
                               color="primary"
                               style={{
