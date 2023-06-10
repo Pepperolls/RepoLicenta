@@ -5,10 +5,14 @@ import {
   ListItemIcon,
   Typography,
   Grid,
+  Menu,
+  MenuItem,
 } from '@material-ui/core';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@material-ui/core/Button';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import AccountCircleOutlined from '@mui/icons-material/AccountCircleOutlined';
+import ExpandMoreOutlined from '@mui/icons-material/ExpandMoreOutlined';
 import { useNavigate, useLocation } from 'react-router-dom';
 import AppHeaderLeftButtons from './AppHeaderLeftButtons';
 import AdminHeaderButtons from './AdminHeaderButtons';
@@ -21,6 +25,40 @@ import { DialogContent } from '@mui/material';
 import { red } from '@mui/material/colors';
 import { toast } from 'react-toastify';
 
+const listItemIconStyle = {
+  minWidth: '40px',
+};
+
+const iconStyle = {
+  fontSize: 30,
+  color: red[50],
+};
+
+const buttonStyle = {
+  color: 'inherit',
+  paddingRight: 25,
+};
+
+const dialogContentStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'column',
+};
+
+const centeredFlex = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+};
+
+const pathNames = [
+  '/AdminHomePage',
+  '/AdminCarsPage',
+  '/AdminUsersPage',
+  '/AdminPartsPage',
+];
+
 toast.configure();
 
 const AppHeader = props => {
@@ -29,40 +67,20 @@ const AppHeader = props => {
 
   const [open, setOpen] = useState(false);
   const [twoFactorSetup, setTwoFactorSetup] = useState({});
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  const listItemIconStyle = {
-    minWidth: '40px',
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
   };
 
-  const iconStyle = {
-    fontSize: 30,
-    color: red[50],
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
-  const buttonStyle = {
-    color: 'inherit',
-    paddingRight: 25,
+  const handleLogout = () => {
+    props.logoutUser();
+    handleClose();
   };
-
-  const dialogContentStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
-  };
-
-  const gridItemStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  };
-
-  const pathNames = [
-    '/AdminHomePage',
-    '/AdminCarsPage',
-    '/AdminUsersPage',
-    '/AdminPartsPage',
-  ];
 
   const getTwoFactorSetup = async () => {
     const settings = await axios.get(
@@ -175,97 +193,129 @@ const AppHeader = props => {
           </>
         ) : (
           <>
-            {props.loggedInUser.isTwoFactorAuthenticationEnabled === false ? (
-              <>
+            <Button
+              aria-controls="dropdown-menu"
+              aria-haspopup="true"
+              onClick={handleClick}
+              startIcon={<AccountCircleOutlined style={iconStyle} />}
+              endIcon={<ExpandMoreOutlined style={iconStyle} />}
+              color="secondary"
+              size="large"
+              style={buttonStyle}
+            >
+              <ListItemText primary={props.loggedInUser.firstName} />
+            </Button>
+            <Menu
+              id="dropdown-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+            >
+              {props.loggedInUser.isTwoFactorAuthenticationEnabled === false ? (
+                <>
+                  <MenuItem style={centeredFlex}>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      size="large"
+                      fullWidth
+                      onClick={handleShow2faConfig}
+                    >
+                      Enable 2FA
+                    </Button>
+                    <Dialog
+                      open={open}
+                      onClose={() => setOpen(false)}
+                      PaperProps={{
+                        style: {
+                          maxHeight: '100%',
+                          maxWidth: '100%',
+                        },
+                      }}
+                    >
+                      <DialogContent style={dialogContentStyle}>
+                        <Typography style={{ textAlign: 'center' }}>
+                          Please scan the QR code below using the Google
+                          Authenticator application:
+                        </Typography>
+                        <div>
+                          <img
+                            src={twoFactorSetup.qrCode}
+                            style={{ height: 300, width: 300 }}
+                            alt="QR Code"
+                          />
+                        </div>
+                        <Typography style={{ textAlign: 'center' }}>
+                          You may also choose to manually enter the code:
+                          <br />
+                          {twoFactorSetup.manualCode}
+                        </Typography>
+                        <Grid container>
+                          <Grid item style={centeredFlex} xs={6}>
+                            <Button
+                              onClick={() => setOpen(false)}
+                              variant="contained"
+                              color="primary"
+                              style={{
+                                marginTop: 15,
+                                width: 100,
+                                backgroundColor: red[500],
+                              }}
+                            >
+                              Cancel
+                            </Button>
+                          </Grid>
+                          <Grid item style={centeredFlex} xs={6}>
+                            <Button
+                              onClick={handleTwoFactorEnabled}
+                              variant="contained"
+                              color="primary"
+                              style={{
+                                marginTop: 15,
+                                width: 100,
+                              }}
+                            >
+                              Done
+                            </Button>
+                          </Grid>
+                        </Grid>
+                      </DialogContent>
+                    </Dialog>
+                  </MenuItem>
+                </>
+              ) : (
+                <MenuItem style={centeredFlex}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    size="large"
+                    onClick={handleTwoFactorDisabling}
+                  >
+                    Disable 2FA
+                  </Button>
+                </MenuItem>
+              )}
+              <MenuItem style={centeredFlex}>
                 <Button
                   variant="contained"
                   color="secondary"
                   size="large"
-                  onClick={handleShow2faConfig}
-                  style={{ marginRight: '20px' }}
+                  fullWidth
+                  onClick={handleLogout}
                 >
-                  Enable 2FA
+                  Log Out
                 </Button>
-                <Dialog
-                  open={open}
-                  onClose={() => setOpen(false)}
-                  PaperProps={{
-                    style: {
-                      maxHeight: '100%',
-                      maxWidth: '100%',
-                    },
-                  }}
-                >
-                  <DialogContent style={dialogContentStyle}>
-                    <Typography style={{ textAlign: 'center' }}>
-                      Please scan the QR code below using the Google
-                      Authenticator application:
-                    </Typography>
-                    <div>
-                      <img
-                        src={twoFactorSetup.qrCode}
-                        style={{ height: 300, width: 300 }}
-                        alt="QR Code"
-                      />
-                    </div>
-                    <Typography style={{ textAlign: 'center' }}>
-                      You may also choose to manually enter the code:
-                      <br />
-                      {twoFactorSetup.manualCode}
-                    </Typography>
-                    <Grid container>
-                      <Grid item style={gridItemStyle} xs={6}>
-                        <Button
-                          onClick={() => setOpen(false)}
-                          variant="contained"
-                          color="primary"
-                          style={{
-                            marginTop: 15,
-                            width: 100,
-                            backgroundColor: red[500],
-                          }}
-                        >
-                          Cancel
-                        </Button>
-                      </Grid>
-                      <Grid item style={gridItemStyle} xs={6}>
-                        <Button
-                          onClick={handleTwoFactorEnabled}
-                          variant="contained"
-                          color="primary"
-                          style={{
-                            marginTop: 15,
-                            width: 100,
-                            // backgroundColor: lightGreen[500],
-                          }}
-                        >
-                          Done
-                        </Button>
-                      </Grid>
-                    </Grid>
-                  </DialogContent>
-                </Dialog>
-              </>
-            ) : (
-              <Button
-                variant="contained"
-                color="secondary"
-                size="large"
-                onClick={handleTwoFactorDisabling}
-                style={{ marginRight: '20px' }}
-              >
-                Disable 2FA
-              </Button>
-            )}
-
-            <Button
-              variant="contained"
-              color="secondary"
-              size="large"
-              onClick={() => props.logoutUser()}
-            >
-              Log Out
-            </Button>
+              </MenuItem>
+            </Menu>
           </>
         )}
       </Toolbar>
