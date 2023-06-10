@@ -66,12 +66,8 @@ const Footer = () => {
             </div>
             <div style={centeredFlex}>
               <MailOutline style={{ paddingRight: 10 }} />
-              <span>contact@carlounge.com</span>
+              <span>contact@carlounge.org</span>
             </div>
-            <img
-              src="https://i.ibb.co/Qfvn4z6/payment.png"
-              alt="Payment methods"
-            />
           </div>
         </Grid>
       </Grid>

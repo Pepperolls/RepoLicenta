@@ -1,8 +1,16 @@
 import Button from '@mui/material/Button';
-import { Typography, Grid } from '@material-ui/core';
+import {
+  Typography,
+  Grid,
+  Dialog,
+  DialogContent,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+} from '@material-ui/core';
 import { lightGreen } from '@mui/material/colors';
 import CartProduct from './CartProduct';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Paper } from '@mui/material';
 import { connect } from 'react-redux';
@@ -10,6 +18,7 @@ import { bindActionCreators } from 'redux';
 import * as productActions from '../redux/actions/productActions';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { red } from '@mui/material/colors';
 
 toast.configure();
 
@@ -18,6 +27,25 @@ const summaryGridContainerStyle = {
   justifyContent: 'center',
   alignItems: 'center',
   padding: 20,
+};
+
+const columnCenteredFlex = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'column',
+};
+
+const centeredFlex = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+};
+
+const spaceBetweenFlex = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
 };
 
 const Cart = props => {
@@ -42,7 +70,13 @@ const Cart = props => {
     props.fetchParts();
   }, []);
 
-  async function handleCheckoutNow() {
+  const [openConfirmOrderDialog, setOpenConfirmOrderDialog] = useState(false);
+
+  function handleCheckoutNow() {
+    setOpenConfirmOrderDialog(true);
+  }
+
+  async function handlePlaceOrder() {
     try {
       if (partsAddedToCartDTO.length > 0) {
         if (loggedInUser) {
@@ -115,7 +149,7 @@ const Cart = props => {
   return (
     <div style={{ padding: '50px' }}>
       <Grid container spacing={3}>
-        <Grid item xs={9}>
+        <Grid item xs={8}>
           <Grid container spacing={3}>
             {partsAddedToCart.map((partAddedToCart, index) => {
               return (
@@ -138,7 +172,7 @@ const Cart = props => {
           </Grid>
         </Grid>
 
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <Paper
             style={{
               padding: 15,
@@ -147,37 +181,22 @@ const Cart = props => {
             }}
           >
             <Grid container spacing={4} style={summaryGridContainerStyle}>
-              <Typography variant="h4">ORDER SUMMARY</Typography>
-              <Grid
-                item
-                xs={12}
-                style={{ display: 'flex', justifyContent: 'space-between' }}
-              >
+              <Grid item xs={12} style={centeredFlex}>
+                <Typography variant="h4">ORDER SUMMARY</Typography>
+              </Grid>
+              <Grid item xs={12} style={spaceBetweenFlex}>
                 <Typography>Subtotal</Typography>
                 <Typography>${parseFloat(totalSum).toFixed(2)}</Typography>
               </Grid>
-              <Grid
-                item
-                xs={12}
-                style={{ display: 'flex', justifyContent: 'space-between' }}
-              >
+              <Grid item xs={12} style={spaceBetweenFlex}>
                 <Typography>Estimated Shipping</Typography>
                 <Typography>$ 5.90</Typography>
               </Grid>
-              <Grid
-                item
-                xs={12}
-                style={{ display: 'flex', justifyContent: 'space-between' }}
-              >
+              <Grid item xs={12} style={spaceBetweenFlex}>
                 <Typography>Shipping Discount</Typography>
                 <Typography>$ -5.90</Typography>
               </Grid>
-              <Grid
-                item
-                xs={12}
-                style={{ display: 'flex', justifyContent: 'space-between' }}
-                type="total"
-              >
+              <Grid item xs={12} style={spaceBetweenFlex} type="total">
                 <Typography variant="h5">
                   <b>Total: </b>
                 </Typography>
@@ -185,19 +204,112 @@ const Cart = props => {
                   <b>${parseFloat(totalSum).toFixed(2)} </b>
                 </Typography>
               </Grid>
-              <Button
-                variant="contained"
-                style={{
-                  backgroundColor: lightGreen[700],
-                }}
-                onClick={handleCheckoutNow}
-              >
-                Checkout now
-              </Button>
+              <Grid item xs={12}>
+                <div style={spaceBetweenFlex}>
+                  <Typography>
+                    <b>Payment method: </b>
+                  </Typography>
+                  <RadioGroup
+                    row
+                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    name="row-radio-buttons-group"
+                  >
+                    <FormControlLabel
+                      value="cash"
+                      control={<Radio checked="true" color="primary" />}
+                      label="Cash on delivery"
+                      style={{ margin: '0px 5px 0px 5px' }}
+                    />
+                    <FormControlLabel
+                      value="creditCard"
+                      disabled
+                      control={<Radio />}
+                      label="Online with credit card"
+                      style={{ margin: 0 }}
+                    />
+                  </RadioGroup>
+                </div>
+              </Grid>
+              <Grid item xs={12} style={centeredFlex}>
+                <Button
+                  variant="contained"
+                  style={{
+                    backgroundColor: lightGreen[700],
+                  }}
+                  onClick={handleCheckoutNow}
+                >
+                  Checkout now
+                </Button>
+              </Grid>
             </Grid>
           </Paper>
         </Grid>
       </Grid>
+      <Dialog
+        open={openConfirmOrderDialog}
+        onClose={() => setOpenConfirmOrderDialog(false)}
+      >
+        <DialogContent style={columnCenteredFlex}>
+          <Grid container>
+            <Grid item xs={12} style={centeredFlex}>
+              <div style={columnCenteredFlex}>
+                <img
+                  class="logo"
+                  src="https://i.imgur.com/Is4sTel.png"
+                  alt="Company Logo"
+                />
+                <h1 style={{ marginTop: -30 }}>Order Confirmation</h1>
+                <div>
+                  <strong style={{ marginBottom: 10 }}>Billed To:</strong>{' '}
+                  {loggedInUser.firstName + ' ' + loggedInUser.lastName}
+                  <br />
+                  <strong>Email:</strong> {loggedInUser.email}
+                  <br />
+                  <strong>Shipping Address:</strong>{' '}
+                  {loggedInUser.address +
+                    ', ' +
+                    loggedInUser.city +
+                    ', ' +
+                    loggedInUser.zipCode +
+                    ', ' +
+                    loggedInUser.country}
+                  <br />
+                  <strong>Total Amount:</strong> <span>${totalSum}</span>
+                  <br />
+                  <strong>Payment Method:</strong> <span>Cash</span>
+                </div>
+              </div>
+            </Grid>
+            <Grid item xs={6} style={centeredFlex}>
+              <Button
+                onClick={() => setOpenConfirmOrderDialog(false)}
+                variant="contained"
+                color="primary"
+                style={{
+                  marginTop: 15,
+                  width: 175,
+                  backgroundColor: red[500],
+                }}
+              >
+                Go back
+              </Button>
+            </Grid>
+            <Grid item xs={6} style={centeredFlex}>
+              <Button
+                onClick={handlePlaceOrder}
+                variant="contained"
+                color="primary"
+                style={{
+                  marginTop: 15,
+                  width: 175,
+                }}
+              >
+                Place order
+              </Button>
+            </Grid>
+          </Grid>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

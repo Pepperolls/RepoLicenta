@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Order Confirmation</title>
     <style>
-        /* CSS styles for the invoice */
+        
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -13,7 +13,7 @@
 
         h1 {
             color: #333;
-            font-size: 24px; /* Increase the font size */
+            font-size: 24px;
             margin-bottom: 10px;
         }
 
@@ -40,7 +40,7 @@
 
             .invoice-details div {
                 margin-bottom: 10px;
-                font-size: 16px; /* Increase the font size */
+                font-size: 16px;
             }
 
             .invoice-details strong {
@@ -56,7 +56,7 @@
             .table th, .table td {
                 padding: 10px;
                 border: 1px solid #ccc;
-                font-size: 16px; /* Increase the font size */
+                font-size: 16px;
             }
 
             .table th {
@@ -66,7 +66,7 @@
         .total {
             font-weight: bold;
             text-align: right;
-            font-size: 18px; /* Increase the font size */
+            font-size: 18px;
         }
     </style>
 </head>
@@ -79,9 +79,7 @@
                 <!--<strong>Order Number:</strong> {OrderNumber}<br>-->
                 <strong>Date:</strong> {OrderDate}<br>
                 <strong>Billed To:</strong> {CustomerName}<br>
-                <strong>Email:</strong> {CustomerEmail}
-            </div>
-            <div>
+                <strong>Email:</strong> {CustomerEmail}<br>
                 <strong>Payment Method:</strong> {PaymentMethod}<br>
                 <strong>Shipping Address:</strong> {ShippingAddress}
             </div>
@@ -96,9 +94,9 @@
             {OrderItems}
         </table>
         <div class="total">
-            <strong>Total Amount:</strong> <span style="font-weight: bold;">{TotalAmount}</span> <!-- Wrap the total amount in a span and apply font-weight: bold -->
+            <strong>Total Amount:</strong> <span style="font-weight: bold;">{TotalAmount}</span>
         </div>
-        <p>Thank you for your order. If you have any questions, please contact our customer support.</p>
+        <p>Thank you for your order. If you have any questions, please contact our customer support at contact@carlounge.org.</p>
     </div>
 </body>
 </html>
