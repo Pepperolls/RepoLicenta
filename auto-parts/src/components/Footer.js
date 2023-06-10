@@ -47,15 +47,6 @@ const Footer = () => {
             </p>
           </div>
         </Grid>
-        {/* <Grid item xs={4} style={gridItemStyle}>
-          <div style={{ height: '150px' }}>
-            <img
-              height={'100%'}
-              src="/images/LogoWhite.png"
-              alt="White CarLounge logo"
-            />
-          </div>
-        </Grid> */}
         <Grid item xs={4} style={gridItemStyle}>
           <div>
             <div style={centeredFlex}>

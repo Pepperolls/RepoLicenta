@@ -11,6 +11,9 @@ using WebApplication.Repositories;
 using WebApplication.Services.EmailService;
 using WebApplication.Services.EmailService.Interfaces;
 using WebApplication.Services.EmailService.Models;
+using WebApplication.Services.VINDecoderService;
+using WebApplication.Services.VINDecoderService.Interfaces;
+using WebApplication.Services.VINDecoderService.Models;
 
 namespace WebApplication
 {
@@ -64,6 +67,9 @@ namespace WebApplication
                 client.BaseAddress = new Uri(mailSettings.ApiBaseUrl); 
                 client.DefaultRequestHeaders.Add("Api-Token", mailSettings.ApiToken);
             });
+
+            services.Configure<VINDecoderSettings>(Configuration.GetSection("VINDecoderSettings"));
+            services.AddTransient<IVINDecoderService, VINDecoderService>();
 
         }
 

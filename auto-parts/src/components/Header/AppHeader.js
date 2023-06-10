@@ -69,7 +69,7 @@ const AppHeader = props => {
   const [twoFactorSetup, setTwoFactorSetup] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleClick = event => {
+  const handleOpenUserMenu = event => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -196,7 +196,7 @@ const AppHeader = props => {
             <Button
               aria-controls="dropdown-menu"
               aria-haspopup="true"
-              onClick={handleClick}
+              onClick={handleOpenUserMenu}
               startIcon={<AccountCircleOutlined style={iconStyle} />}
               endIcon={<ExpandMoreOutlined style={iconStyle} />}
               color="secondary"
@@ -293,16 +293,18 @@ const AppHeader = props => {
                   </MenuItem>
                 </>
               ) : (
-                <MenuItem style={centeredFlex}>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    size="large"
-                    onClick={handleTwoFactorDisabling}
-                  >
-                    Disable 2FA
-                  </Button>
-                </MenuItem>
+                <>
+                  <MenuItem style={centeredFlex}>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      size="large"
+                      onClick={handleTwoFactorDisabling}
+                    >
+                      Disable 2FA
+                    </Button>
+                  </MenuItem>
+                </>
               )}
               <MenuItem style={centeredFlex}>
                 <Button
