@@ -1,8 +1,16 @@
 import { useEffect, useState } from 'react';
-import { Grid, TextField, Typography, Box, Paper } from '@material-ui/core';
+import {
+  Grid,
+  TextField,
+  Typography,
+  Box,
+  Paper,
+  Button,
+} from '@material-ui/core';
 import ProductCard from '../components/ProductCard';
 import PriceSlider from '../components/PriceSlider';
 import MultipleSelectCheckbox from '../components/MultipleSelectCheckbox';
+import axios from 'axios';
 
 const centeredDiv = {
   display: 'flex',
@@ -18,6 +26,7 @@ const ProductCardsContainer = props => {
 
   const { partsWithCars = [], isLoadingParts = false, cars = [] } = props;
   const [searchBy, setSearchBy] = useState('');
+  const [VIN, setVIN] = useState('');
   const [selectedCarMake, setSelectedCarMake] = useState('');
   const [selectedCarModel, setSelectedCarModel] = useState('');
   const [selectedCarFuelType, setSelectedCarFuelType] = useState('');
@@ -43,6 +52,28 @@ const ProductCardsContainer = props => {
     );
   });
 
+  async function handleFilterByVIN() {
+    const res = await axios.get(
+      process.env.REACT_APP_API_URL + `/DecodeVIN/${VIN}`
+    );
+    if (res) {
+      console.log(res.data);
+      const carData = res.data;
+      setSelectedCarMake(carData.find(entry => entry.label === 'Make')?.value);
+      setSelectedCarModel(
+        carData.find(entry => entry.label === 'Model')?.value
+      );
+      setSelectedCarFuelType(
+        carData.find(entry => entry.label === 'Fuel Type - Primary')?.value
+      );
+      setSelectedCarEngineCapacity(
+        carData.find(entry => entry.label === 'Engine Displacement (ccm)')
+          ?.value
+      );
+    } else {
+      console.log('Error retrieving car data through VIN.');
+    }
+  }
   const handleSelectedCarMakeChange = event => {
     setSelectedCarMake(event.target.value);
     setSelectedCarModel('');
@@ -115,7 +146,7 @@ const ProductCardsContainer = props => {
               '0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 -1px 2px 0 rgba(0, 0, 0, 0.2)',
           }}
         >
-          <Grid container spacing={2} style={centeredDiv}>
+          <Grid container spacing={3} style={centeredDiv}>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -125,6 +156,30 @@ const ProductCardsContainer = props => {
                   setSearchBy(event.target.value);
                 }}
               />
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container spacing={1} style={centeredDiv}>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    type="input"
+                    label="Enter VIN"
+                    onChange={event => {
+                      setVIN(event.target.value);
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} style={{ width: '100%' }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    onClick={handleFilterByVIN}
+                  >
+                    Filter by VIN
+                  </Button>
+                </Grid>
+              </Grid>
             </Grid>
             <Grid item xs={12}>
               <Typography variant="subtitle1">
