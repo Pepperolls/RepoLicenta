@@ -17,6 +17,7 @@ import CartPage from './containers/CartPage';
 import SignUpPage from './containers/SignUpPage';
 import SignInPage from './containers/SignInPage';
 import OrderConfirmationPage from './containers/OrderConfirmationPage';
+import UpdateUserAccountPage from './containers/UpdateUserAccountPage';
 
 ReactDOM.render(
   <Provider store={store}>
@@ -43,6 +44,10 @@ ReactDOM.render(
             <Route
               path="/OrderConfirmationPage"
               element={<OrderConfirmationPage />}
+            />
+            <Route
+              path="/UpdateUserAccount"
+              element={<UpdateUserAccountPage />}
             />
           </Routes>
           <Footer />
