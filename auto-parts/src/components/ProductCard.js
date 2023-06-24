@@ -50,8 +50,12 @@ const ProductCard = props => {
   ${carDetails.fabricationYear}, ${carDetails.fuelType}, ${carDetails.cubicCapacity} cmc`;
 
   const cardStyle = {
+    height: 500,
     boxShadow:
       '0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 -1px 2px 0 rgba(0, 0, 0, 0.2)',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   };
 
   function handleAddToCart() {

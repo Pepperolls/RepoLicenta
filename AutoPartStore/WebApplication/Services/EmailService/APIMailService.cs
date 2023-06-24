@@ -11,7 +11,7 @@ using System.Net.Http.Json;
 using Org.BouncyCastle.Asn1.Pkcs;
 using WebApplication.Models;
 using System.Text;
-using WebApplication.Repositories;
+using WebApplication.Repositories.Interfaces;
 
 public class APIMailService : IAPIMailService
 {

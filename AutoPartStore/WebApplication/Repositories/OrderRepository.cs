@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using WebApplication.Models;
+using WebApplication.Repositories.Interfaces;
 
 namespace WebApplication.Repositories
 {

@@ -35,7 +35,8 @@ const Footer = () => {
       location?.pathname === '/AdminHomePage' ||
       location?.pathname === '/AdminCarsPage' ||
       location?.pathname === '/AdminUsersPage' ||
-      location?.pathname === '/AdminPartsPage'
+      location?.pathname === '/AdminPartsPage' ||
+      location?.pathname === '/'
     ) && (
       <Grid container style={mainGridStyle}>
         <Grid item xs={4} style={gridItemStyle}>
@@ -53,7 +54,7 @@ const Footer = () => {
               <h3>Contact</h3>
             </div>
             <div style={centeredFlex}>
-              <Phone style={{ paddingRight: 10 }} /> <span>+0712 345 678</span>
+              <Phone style={{ paddingRight: 10 }} /> <span>+0743 556 344</span>
             </div>
             <div style={centeredFlex}>
               <MailOutline style={{ paddingRight: 10 }} />
