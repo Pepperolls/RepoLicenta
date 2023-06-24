@@ -4,9 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using WebApplication.Models;
-using WebApplication.Repositories;
+using WebApplication.Repositories.Interfaces;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace WebApplication.Controllers
@@ -33,6 +35,12 @@ namespace WebApplication.Controllers
                 return BadRequest(new { message = "E-mail or username already in use!" });
             }
 
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(user.Password));
+                string hashString = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+                user.Password = hashString;
+            }
             await _userRepository.CreateUser(user);
 
             return CreatedAtAction(nameof(CreateUser), new { id = user.UserId }, user);
@@ -41,8 +49,6 @@ namespace WebApplication.Controllers
         [HttpPut("/UpdateUser/{userToModifyGuid}")]
         public async Task<ActionResult<UserController>> UpdateUser(Guid userToModifyGuid, [FromBody] UserModel userModel)
         {
-            var response = await _userRepository.UpdateUser(userToModifyGuid, userModel);
-
             var userByUsername = await _userRepository.GetUserByUsername(userModel.Username);
             var userByEmail = await _userRepository.GetUserByEmail(userModel.Email);
 
@@ -50,6 +56,15 @@ namespace WebApplication.Controllers
             {
                 return BadRequest(new { message = "E-mail or username already in use!" });
             }
+
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(userModel.Password));
+                string hashString = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+                userModel.Password = hashString;
+            }
+
+            var response = await _userRepository.UpdateUser(userToModifyGuid, userModel);
 
             if (response == null)
             {
@@ -64,15 +79,20 @@ namespace WebApplication.Controllers
         {
             IEnumerable<UserModel> userList = await _userRepository.GetAllUsers();
 
-            return userList.ToArray();
+            return Ok(userList.ToArray());
         }
 
         [HttpGet("/GetUserByGuid/{userGuid}")]
         public async Task<ActionResult<UserModel>> GetUserByGuid(Guid userGuid)
         {
             var user = await _userRepository.GetUserByGuid(userGuid);
+            
+            if(user == null)
+            {
+                return NotFound(new { message = "No user has been found with the given ID." });
+            }
 
-            return user;
+            return Ok(user);
         }
 
 
@@ -88,13 +108,20 @@ namespace WebApplication.Controllers
 
             await _userRepository.DeleteUserByGuid(existingUser.UserId);
 
-            return NoContent();
+            return Ok();
         }
 
         [HttpPost("/LoginUser/{usernameOrEmail}/{password}")]
         public async Task<ActionResult<UserModel>> LoginUser(string usernameOrEmail, string password)
         {
-            var user = isValidEmail(usernameOrEmail) ? 
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                string hashString = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+                password = hashString;
+            }
+
+            var user = IsValidEmail(usernameOrEmail) ? 
                 await _userRepository.GetUserByEmailAndPassword(usernameOrEmail, password) :
                 await _userRepository.GetUserByUsernameAndPassword(usernameOrEmail, password);
 
@@ -141,7 +168,7 @@ namespace WebApplication.Controllers
             return Ok();
         }
 
-        private bool isValidEmail(string email)
+        private bool IsValidEmail(string email)
         {
             var trimmedEmail = email.Trim();
 

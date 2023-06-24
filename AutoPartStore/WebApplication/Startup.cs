@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System;
 using WebApplication.Repositories;
+using WebApplication.Repositories.Interfaces;
 using WebApplication.Services.EmailService;
 using WebApplication.Services.EmailService.Interfaces;
 using WebApplication.Services.EmailService.Models;
@@ -33,16 +34,6 @@ namespace WebApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddCors(options =>
-            //{
-            //    options.AddDefaultPolicy(builder =>
-            //                      {
-            //                          builder.WithOrigins("http://localhost:3000")
-            //                          .AllowAnyHeader()
-            //                          .AllowAnyMethod();
-            //                      });
-            //});
-
             services.AddControllers().AddNewtonsoftJson(options 
                 => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 

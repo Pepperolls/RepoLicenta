@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication.Models;
+using WebApplication.Repositories.Interfaces;
 
 namespace WebApplication.Repositories
 {
@@ -70,25 +71,25 @@ namespace WebApplication.Repositories
 
         public async Task<UserModel> GetUserByUsernameAndPassword(string username, string password)
         {
-            var user = _dbContext.Users.FirstOrDefault(u => u.Username == username && u.Password == password);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Username == username && u.Password == password);
             return await Task.FromResult(user);
         }
 
         public async Task<UserModel> GetUserByEmailAndPassword(string email, string password)
         {
-            var user = _dbContext.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
             return await Task.FromResult(user);
         }
 
         public async Task<UserModel> GetUserByUsername(string username)
         {
-            var user = _dbContext.Users.FirstOrDefault(u => u.Username == username);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
             return await Task.FromResult(user);
         }
 
         public async Task<UserModel> GetUserByEmail(string email)
         {
-            var user = _dbContext.Users.FirstOrDefault(u => u.Email == email);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
             return await Task.FromResult(user);
         }
     }

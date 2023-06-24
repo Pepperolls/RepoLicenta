@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebApplication.Models;
 
-namespace WebApplication.Repositories
+namespace WebApplication.Repositories.Interfaces
 {
     public interface IOrderRepository
     {

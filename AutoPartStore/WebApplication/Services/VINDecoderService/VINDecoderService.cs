@@ -20,7 +20,7 @@ namespace WebApplication.Services.VINDecoderService
         private readonly string _baseUrl;
         private readonly string _decodeAction;
 
-        public VINDecoderService(IOptions<VINDecoderSettings> vinDecoderSettings, IHttpClientFactory httpClientFactory)
+        public VINDecoderService(IOptions<VINDecoderSettings> vinDecoderSettings)
         {
             _vinDecoderSettings = vinDecoderSettings.Value;
             _apiKey = _vinDecoderSettings.ApiKey;
