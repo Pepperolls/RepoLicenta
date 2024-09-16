@@ -105,7 +105,7 @@ const AppHeader = props => {
     try {
       const res = await axios.put(
         process.env.REACT_APP_API_URL +
-          `/UpdateUser/${props.loggedInUser.userId}`,
+          `/UpdateUser/${props.loggedInUser.userId}?encryptPassword=false`,
         {
           email: props.loggedInUser.email,
           username: props.loggedInUser.username,
@@ -136,7 +136,7 @@ const AppHeader = props => {
     try {
       const res = await axios.put(
         process.env.REACT_APP_API_URL +
-          `/UpdateUser/${props.loggedInUser.userId}`,
+          `/UpdateUser/${props.loggedInUser.userId}?encryptPassword=false`,
         {
           email: props.loggedInUser.email,
           username: props.loggedInUser.username,
@@ -304,6 +304,7 @@ const AppHeader = props => {
                       variant="contained"
                       color="secondary"
                       size="large"
+                      fullWidth
                       onClick={handleTwoFactorDisabling}
                     >
                       Disable 2FA

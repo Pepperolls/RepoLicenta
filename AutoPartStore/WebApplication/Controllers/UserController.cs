@@ -47,7 +47,7 @@ namespace WebApplication.Controllers
         }
 
         [HttpPut("/UpdateUser/{userToModifyGuid}")]
-        public async Task<ActionResult<UserController>> UpdateUser(Guid userToModifyGuid, [FromBody] UserModel userModel)
+        public async Task<ActionResult<UserController>> UpdateUser(Guid userToModifyGuid, [FromBody] UserModel userModel, bool encryptPassword = true)
         {
             var userByUsername = await _userRepository.GetUserByUsername(userModel.Username);
             var userByEmail = await _userRepository.GetUserByEmail(userModel.Email);
@@ -57,11 +57,14 @@ namespace WebApplication.Controllers
                 return BadRequest(new { message = "E-mail or username already in use!" });
             }
 
-            using (SHA256 sha256 = SHA256.Create())
+            if (encryptPassword)
             {
-                byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(userModel.Password));
-                string hashString = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
-                userModel.Password = hashString;
+                using (SHA256 sha256 = SHA256.Create())
+                {
+                    byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(userModel.Password));
+                    string hashString = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+                    userModel.Password = hashString;
+                }
             }
 
             var response = await _userRepository.UpdateUser(userToModifyGuid, userModel);
