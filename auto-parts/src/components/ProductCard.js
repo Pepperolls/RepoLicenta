@@ -58,6 +58,15 @@ const ProductCard = props => {
     justifyContent: 'space-between',
   };
 
+  const cardStyleAux = {
+    height: '100%',
+    boxShadow:
+      '0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 -1px 2px 0 rgba(0, 0, 0, 0.2)',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  };
+
   function handleAddToCart() {
     props.addToCart(partId);
     toast.success('The part was added to your shopping cart.', {
@@ -67,7 +76,7 @@ const ProductCard = props => {
   }
 
   return (
-    <Card style={cardStyle}>
+    <Card style={expanded ? cardStyleAux : cardStyle}>
       <CardHeader
         action={
           <IconButton
@@ -86,7 +95,9 @@ const ProductCard = props => {
           </IconButton>
         }
         title={<h5 style={{ margin: 0 }}>{title}</h5>}
-        subheader={<h4 style={{ margin: 0 }}>{'$' + price}</h4>}
+        subheader={
+          <h4 style={{ margin: 0 }}>{'$' + parseFloat(price).toFixed(2)}</h4>
+        }
       />
       <CardMedia
         style={{
@@ -131,10 +142,10 @@ const ProductCard = props => {
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Details: </Typography>
-          <Typography paragraph>{description}</Typography>
-          <Typography paragraph>Category: </Typography>
-          <Typography paragraph>{specifications}</Typography>
+          <Typography paragraph>Details: {description}</Typography>
+          {/* <Typography paragraph>{description}</Typography> */}
+          <Typography paragraph>Category: {specifications}</Typography>
+          {/* <Typography paragraph>{specifications}</Typography> */}
         </CardContent>
       </Collapse>
     </Card>

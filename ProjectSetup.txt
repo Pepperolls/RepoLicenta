@@ -1,13 +1,64 @@
-VS 2022 Community
-VS Code
-SSMS 2019
+GitHub repository: https://github.com/Pepperolls/RepoLicenta  
+GitLab repository: https://gitlab.upt.ro/rares.mladin/RepoLicenta  
 
-nvm - 1.1.10
-node - v12.22.12
-npm - 6.14.16
+1. Required programs:  
+- VS 2022 Community  
+- VS Code  
+- SSMS 2019  
+- SQL Server 2022  
 
-nvm use 12.22.12
-npm install - inside front project
+- nvm - 1.1.10  
+- node - v12.22.12  
+- npm - 6.14.16  
 
-Configure user secrets connection string
-Authorize IP address on Azure
+Chocolatey (https://chocolatey.org/install)  
+
+Steps:  
+1. Access https://github.com/Pepperolls/RepoLicenta and clone the repository locally.  
+
+2. To configure HTTPS, run the following commands in a CMD:  
+- choco install mkcert  
+- mkcert -install  
+- mkcert -cert-file cert.pem -key-file key.pem localhost (They will be created in System 32 and need to be moved to the local repository).  
+
+3. For the back-end solution, within VS 2022:  
+In the secrets.json file, configure:  
+- SQL Server connection string. It has the following format:  
+
+"CarLoungeDb": ""  
+
+- VinDecoder API settings as a JSON of the VINDecoderService class type. It should have the following format:  
+
+"MailSettings": {  
+    "Server": "send.smtp.mailtrap.io",  
+    "Port": 587,  
+    "SenderName": "invoice@carlounge.org",  
+    "SenderEmail": "invoice@carlounge.org",  
+    "UserName": "api",  
+    "Password": "passwordHere",  
+    "ApiToken": "apiTokenHere",  
+    "ApiBaseUrl": "https://send.api.mailtrap.io/api/"  
+}  
+
+- MailTrap API settings as a JSON of the MailSettings class type. It should have the following format:  
+
+"VINDecoderSettings": {  
+    "ApiBaseUrl": "https://api.vindecoder.eu/3.2",  
+    "ApiKey": "apiKeyHere",  
+    "SecretKey": "secretKeyHere",  
+    "ActionId": "decode"  
+}  
+
+To create the database:  
+Tools -> NuGet Package Manager -> run the command update-database.  
+
+4. In a terminal within VS Code, install the required packages using the following commands:  
+- nvm use 12.22.12  
+- npm install  
+
+5. For the front-end solution, you need to create the .env file, which should contain:  
+
+https=true  
+SSL_CRT_FILE=E:\RepoLicenta\cert.pem  
+SSL_KEY_FILE=E:\RepoLicenta\key.pem  
+REACT_APP_API_URL=https://localhost:44337  

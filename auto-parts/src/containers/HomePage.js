@@ -8,7 +8,7 @@ const centeredDiv = {
   justifyContent: 'center',
   alignItems: 'center',
   backgroundColor: 'rgb(63, 81, 181)',
-  height: '82.5vh',
+  height: '83.1vh',
   padding: '50px',
   color: '#fff',
 };

@@ -274,7 +274,8 @@ const Cart = props => {
                     ', ' +
                     loggedInUser?.country}
                   <br />
-                  <strong>Total Amount:</strong> <span>${totalSum}</span>
+                  <strong>Total Amount:</strong>{' '}
+                  <span>${parseFloat(totalSum).toFixed(2)}</span>
                   <br />
                   <strong>Payment Method:</strong> <span>Cash</span>
                 </div>
